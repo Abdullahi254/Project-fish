@@ -63,8 +63,9 @@ model Batch {
   id             Int      @id @default(autoincrement())
   batchDate      DateTime
   type           String
-  totalWaterLoss Float
-  estimatedLoss  Float
+  totalWaterLoss Float?
+  estimatedLoss  Float?
+  pricePerKilo   Float
   records        Record[]
 }
 
