@@ -2,8 +2,13 @@
 import { useState } from 'react';
 import { RiArrowDropDownLine } from "react-icons/ri"
 import SubTable from './SubTable';
+import { fetchBatchData } from '@/app/actions';
+
+type AsyncReturnType<T extends (...args: any) => Promise<any>> =
+    T extends (...args: any) => Promise<infer R> ? R : any
+
 type Props = {
-    batchList: any[]
+    batchList: AsyncReturnType<typeof fetchBatchData>
 }
 
 const BatchTable = ({
