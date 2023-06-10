@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { RiArrowDropDownLine } from "react-icons/ri"
 import SubTable from './SubTable';
 import { fetchBatchData } from '@/app/actions';
@@ -33,7 +33,7 @@ const BatchTable = ({
             </thead>
             <tbody>
                 {
-                    batchList.map((data) => <div key={data.id}>
+                    batchList.map((data) => <React.Fragment key={data.id}>
                         <tr className='bg-white border-b' >
                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                                 {data.batchDate.toDateString()}
@@ -53,7 +53,7 @@ const BatchTable = ({
                             </td>}
 
                         </tr>
-                    </div>)
+                    </React.Fragment>)
                 }
             </tbody>
         </table>
