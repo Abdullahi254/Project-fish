@@ -14,10 +14,19 @@ type Props = {
 const BatchTable = ({
     batchList
 }: Props) => {
-    const [more, setMore] = useState<boolean>(false)
+    const [activeIds, setActiveIds] = useState<number[]>([])
 
-    const handlemore = () => {
-        setMore(prev => !prev)
+    const handlemore = (id: number) => {
+        if (activeIds.includes(id)) {
+            setActiveIds(
+                activeIds.filter(i => i !== id)
+            )
+        } else {
+            setActiveIds([
+                id,
+                ...activeIds
+            ])
+        }
     }
     return (
         <table className="w-full text-sm text-left text-gray-500">
@@ -42,12 +51,16 @@ const BatchTable = ({
                             <td className="px-6 py-4">{data.totalWaterLoss?.toFixed(2)}</td>
                             <td className="px-6 py-4">{data.pricePerKilo.toFixed(2)}</td>
                             <td className="px-6 py-4">{data.estimatedLoss?.toFixed(2)}</td>
-                            <td className="py-4"><RiArrowDropDownLine className={!more ? `cursor-pointer text-black text-lg` : `cursor-pointer text-black rotate-180 text-lg`} onClick={handlemore} /></td>
+                            <td className="py-4"><RiArrowDropDownLine className={activeIds.includes(data.id) ? `cursor-pointer text-black text-lg` : `cursor-pointer text-black rotate-180 text-lg`} onClick={() => handlemore(data.id)} /></td>
                         </tr>
                         <tr>
-                            {more && <td colSpan={6}>
-                                <div className='max-w-6xl mx-auto py-6 bg-gray-300 my-2'>
-                                    <h2 className='text-center mb-2 text-black font-semibold'>BATCH DATE: {data.batchDate.toDateString()}</h2>
+                            {(activeIds.includes(data.id)) && <td colSpan={6}>
+                                <div className='max-w-6xl mx-auto pt-4 pb-2 bg-gray-200 my-2'>
+                                    <div className='w-full flex justify-evenly'>
+                                        <h2 className='text-center text-black font-semibold'>ID: {data.id}</h2>
+                                        <h2 className='text-center text-black font-semibold'>TYPE: {data.type}</h2>
+                                        <h2 className='text-center text-black font-semibold mb-2'>DATE: {data.batchDate.toDateString()}</h2>
+                                    </div>
                                     <SubTable />
                                 </div>
                             </td>}
