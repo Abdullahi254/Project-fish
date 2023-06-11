@@ -1,11 +1,12 @@
 import React from 'react'
-import BatchInput from './BatchInput'
 import RecordInput from './RecordInput'
-import { addBatchData } from '@/app/actions'
+import { addRecordData } from '@/app/actions'
 
-type Props = {}
+type Props = {
+    batchId: number
+}
 
-const SubTable = (props: Props) => {
+const SubTable = ({batchId}: Props) => {
     return (
         <>
             <table className="w-full text-sm text-left text-gray-500 mb-2 border-x-2">
@@ -48,7 +49,7 @@ const SubTable = (props: Props) => {
                     </tr>
                 </tbody>
             </table>
-            <RecordInput addData={addBatchData}/>
+            <RecordInput addData={addRecordData} batchId={batchId}/>
         </>
     )
 }

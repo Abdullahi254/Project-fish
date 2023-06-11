@@ -71,6 +71,7 @@ model Batch {
 
 model Record {
   id         Int   @id @default(autoincrement())
+  weight     Float
   weightSold Float
   remaining  Float
   waterLoss  Float

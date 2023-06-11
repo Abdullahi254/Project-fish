@@ -61,7 +61,7 @@ const BatchTable = ({
                                         <h2 className='text-center text-black font-semibold'>TYPE: {data.type}</h2>
                                         <h2 className='text-center text-black font-semibold mb-2'>DATE: {data.batchDate.toDateString()}</h2>
                                     </div>
-                                    <SubTable />
+                                    <SubTable batchId={data.id}/>
                                 </div>
                             </td>}
 

@@ -1,13 +1,22 @@
 'use client';
 import React, { useEffect, useState, useRef } from 'react'
 import { MdAdd, } from 'react-icons/md'
-import { Batch } from '../app/actions';
 
 type Props = {
-    addData: ({ date, type, price }: Batch) => Promise<void>
+    addData: (
+        { weight,
+            sold,
+            batchId
+        }:
+            {
+                weight: number
+                sold: number
+                batchId: number
+            }) => Promise<void>
+    batchId: number
 }
 
-const RecordInput = ({ addData }: Props) => {
+const RecordInput = ({ addData, batchId }: Props) => {
     const [showForm, setShowForm] = useState<boolean>(false)
     const [soldSwitch, setSoldSwitch] = useState<boolean>(false)
     const [weightSwitch, setWeightSwitch] = useState<boolean>(false)
@@ -33,15 +42,15 @@ const RecordInput = ({ addData }: Props) => {
             setWeightSwitch(false)
         }
     }
-    async function createBatch(data: FormData) {
+    async function createRecord(data: FormData) {
         console.log("adding...")
         const weight = data.get("weight")?.valueOf()
         const sold = data.get("sold")?.valueOf()
         if (typeof (weight) !== undefined && typeof (sold) !== undefined) {
             addData({
-                date: new Date(data.get("date")?.valueOf() as string),
-                type: data.get("type")?.valueOf() as string,
-                price: Number(data.get("price")?.valueOf()) as number
+                weight: Number(data.get("weight")?.valueOf()) as number,
+                sold: Number(data.get("sold")?.valueOf()) as number,
+                batchId: batchId
             }).then(() => {
                 console.log("added data successfully")
                 setShowForm(prev => !prev)
@@ -69,7 +78,7 @@ const RecordInput = ({ addData }: Props) => {
                         handleAddButton()
                     }} />
                 </div> :
-                    <form className="w-full max-w-[600px] mx-auto  py-2 flex-wrap" action={createBatch}>
+                    <form className="w-full max-w-[600px] mx-auto  py-2 flex-wrap" action={createRecord}>
                         <div className="flex items-center  border-b border-gray-500 py-2">
                             <input name='weight' className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" ref={weightRef} type='number' min="1" placeholder="New Weight" onChange={handleWeightChange} />
                             <input name='sold' className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" ref={soldRef} type='number' min="1" max={weightRef.current?.value} placeholder='Sold Weight' onChange={handleSoldChange} />
