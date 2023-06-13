@@ -3,9 +3,7 @@ import React, { useState } from 'react';
 import { RiArrowDropDownLine } from "react-icons/ri"
 import SubTable from './SubTable';
 import { fetchBatchData } from '@/app/actions';
-
-type AsyncReturnType<T extends (...args: any) => Promise<any>> =
-    T extends (...args: any) => Promise<infer R> ? R : any
+import { AsyncReturnType } from "../../typing"
 
 type Props = {
     batchList: AsyncReturnType<typeof fetchBatchData>
@@ -61,7 +59,7 @@ const BatchTable = ({
                                         <h2 className='text-center text-black font-semibold'>TYPE: {data.type}</h2>
                                         <h2 className='text-center text-black font-semibold mb-2'>DATE: {data.batchDate.toDateString()}</h2>
                                     </div>
-                                    <SubTable batchId={data.id}/>
+                                    <SubTable batchId={data.id} />
                                 </div>
                             </td>}
 
