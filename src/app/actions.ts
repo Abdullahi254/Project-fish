@@ -15,8 +15,8 @@ export const addBatchData = async ({ date, type, price }: Batch) => {
                 pricePerKilo: price,
             }
         })
-    } catch (er) {
-        throw new Error("Error Adding Batch Data", { cause: er })
+    } catch (er: any) {
+        throw new Error(er.message, { cause: er })
     }
 
 }
@@ -27,17 +27,15 @@ export const fetchRecords = async (id: number) => {
             where: { batchId: id }
         })
         return records
-    } catch (er) {
-        throw new Error("Error Fetching Records Data", { cause: er })
+    } catch (er: any) {
+        throw new Error(er.message, { cause: er })
     }
 }
 export const addRecordData = async ({
     weight,
-    sold,
     batchId
 }: {
     weight: number
-    sold: number
     batchId: number
 }) => {
     try {
@@ -46,8 +44,8 @@ export const addRecordData = async ({
             const record = await prisma.record.create({
                 data: {
                     weight,
-                    weightSold: sold,
-                    remaining: (weight - sold),
+                    weightSold: 0,
+                    remaining: (weight - 0),
                     waterLoss: 0,
                     batch: {
                         connect: { id: batchId }
@@ -57,11 +55,14 @@ export const addRecordData = async ({
         } else {
             const previousRecord = existingRecords[existingRecords.length - 1]
             const waterLoss = previousRecord.remaining - weight
+            if (weight > previousRecord.remaining) {
+                throw new Error("New Weight can not be More than Previous Recording")
+            }
             const record = await prisma.record.create({
                 data: {
                     weight,
-                    weightSold: sold,
-                    remaining: (weight - sold),
+                    weightSold: 0,
+                    remaining: (weight - 0),
                     waterLoss,
                     batch: {
                         connect: { id: batchId }
@@ -70,8 +71,8 @@ export const addRecordData = async ({
             })
 
         }
-    } catch (er) {
-        throw new Error("Error Adding Record Data", { cause: er })
+    } catch (er: any) {
+        throw new Error(er.message, { cause: er })
     }
 }
 
@@ -79,7 +80,7 @@ export const fetchBatchData = async () => {
     try {
         const batchList = await prisma.batch.findMany()
         return batchList
-    } catch (er) {
-        throw new Error("Error Fetching Batch Data", { cause: er })
+    } catch (er: any) {
+        throw new Error(er.message, { cause: er })
     }
 }

@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { RiArrowDropDownLine } from "react-icons/ri"
-import SubTable from './SubTable';
+import RecordsTable from './RecordsTable';
 import { fetchBatchData } from '@/app/actions';
 import { AsyncReturnType } from "../../typing"
 
@@ -59,7 +59,7 @@ const BatchTable = ({
                                         <h2 className='text-center text-black font-semibold'>TYPE: {data.type}</h2>
                                         <h2 className='text-center text-black font-semibold mb-2'>DATE: {data.batchDate.toDateString()}</h2>
                                     </div>
-                                    <SubTable batchId={data.id} />
+                                    <RecordsTable batchId={data.id} />
                                 </div>
                             </td>}
 

@@ -3,7 +3,7 @@
 import RecordInput from './RecordInput'
 import { addRecordData, fetchRecords } from '@/app/actions'
 import { AsyncReturnType } from "../../typing"
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AiOutlineEdit } from "react-icons/ai"
 import { FcCancel } from "react-icons/fc"
 import { TiTickOutline as TiTick } from "react-icons/ti"
@@ -13,16 +13,23 @@ type Props = {
     batchId: number
 }
 
-const SubTable = ({ batchId }: Props) => {
+const RecordsTable = ({ batchId }: Props) => {
     const [records, setRecords] = useState<AsyncReturnType<typeof fetchRecords>>([])
     const [activateInput, setActivateInput] = useState<boolean>(false)
 
-    useEffect(() => {
-        fetchRecords(batchId).then(res => {
-            setRecords(res)
-        })
-        return setRecords([])
+    const fetchData = React.useCallback(async () => {
+        try {
+            const records = await fetchRecords(batchId)
+            setRecords(records)
+        } catch (er: any) {
+            console.log(er.message)
+        }
     }, [batchId])
+    useEffect(() => {
+
+        fetchData()
+        return setRecords([])
+    }, [fetchData])
 
     const handleSoldInput = () => {
         setActivateInput(true)
@@ -73,9 +80,9 @@ const SubTable = ({ batchId }: Props) => {
                     }
                 </tbody>
             </table>
-            <RecordInput addData={addRecordData} batchId={batchId} />
+            <RecordInput addData={addRecordData} batchId={batchId} fetchData={fetchData} />
         </>
     )
 }
 
-export default SubTable
+export default RecordsTable
