@@ -3,7 +3,7 @@
 import RecordInput from './RecordInput'
 import { addRecordData, fetchRecords } from '@/app/actions'
 import { AsyncReturnType } from "../../typing"
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { AiOutlineEdit } from "react-icons/ai"
 import { FcCancel } from "react-icons/fc"
 import { TiTickOutline as TiTick } from "react-icons/ti"
@@ -16,6 +16,8 @@ type Props = {
 const RecordsTable = ({ batchId }: Props) => {
     const [records, setRecords] = useState<AsyncReturnType<typeof fetchRecords>>([])
     const [activateInput, setActivateInput] = useState<boolean>(false)
+
+    const soldRef = useRef<HTMLInputElement>(null)
 
     const fetchData = React.useCallback(async () => {
         try {
@@ -35,6 +37,7 @@ const RecordsTable = ({ batchId }: Props) => {
         setActivateInput(true)
     }
     const updateRecord = (id: number) => {
+        console.log(soldRef.current?.value)
         setActivateInput(false)
     }
     return (
@@ -58,9 +61,14 @@ const RecordsTable = ({ batchId }: Props) => {
                             </th>
                             <td className="px-4 py-4">{record.weight}</td>
                             {(activateInput && records.length === record.id) ?
-                                <input type="number" autoFocus min={0} max={record.weight} placeholder="Sold(kg)" size={5}
-                                    className={`border-b-2 outline-none border-black text-gray-900 text-sm  block p-4`}
-                                /> :
+                                <td>
+                                    <form id='my-form' action={() => updateRecord(record.id)}>
+                                        <input type="number" autoFocus min={0} max={record.weight} placeholder="Sold(kg)" size={5} ref={soldRef}
+                                            className={`border-b-2 outline-none border-black text-gray-900 text-sm  block p-4`}
+                                        />
+                                    </form>
+
+                                </td> :
                                 <td className="px-4 py-4">{record.weightSold}</td>
                             }
                             <td className="px-4 py-4">{record.remaining}</td>
@@ -71,7 +79,7 @@ const RecordsTable = ({ batchId }: Props) => {
                                     {
                                         !activateInput ?
                                             <AiOutlineEdit className='cursor-pointer text-green-600' onClick={handleSoldInput} /> :
-                                            <TiTick className='cursor-pointer text-green-600' onClick={() => updateRecord(record.id)} />
+                                            <button form='my-form'><TiTick className='cursor-pointer text-green-600' /></button>
                                     }
                                 </> :
                                     <FcCancel />}
