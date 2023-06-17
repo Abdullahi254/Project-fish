@@ -1,7 +1,7 @@
 'use client'
 
 import RecordInput from './RecordInput'
-import { addRecordData, fetchRecords } from '@/app/actions'
+import { addRecordData, fetchRecords, updateRecord } from '@/app/actions'
 import { AsyncReturnType } from "../../typing"
 import React, { useEffect, useState, useRef } from 'react'
 import { AiOutlineEdit } from "react-icons/ai"
@@ -33,12 +33,21 @@ const RecordsTable = ({ batchId }: Props) => {
         return setRecords([])
     }, [fetchData])
 
-    const handleSoldInput = () => {
+    const editButtonHandler = () => {
         setActivateInput(true)
     }
-    const updateRecord = (id: number) => {
-        console.log(soldRef.current?.value)
-        setActivateInput(false)
+    const updateRecordHandler = async (id: number, data: FormData, batchId: number) => {
+        try {
+            const sold = data.get("sold")?.valueOf()
+            if (typeof (sold) !== undefined) {
+                console.log(id)
+                await updateRecord(id, Number(sold,), batchId)
+                setActivateInput(false)
+                fetchData()
+            }
+        } catch (er: any) {
+            console.log("error updating record", er.message)
+        }
     }
     return (
         <>
@@ -62,8 +71,13 @@ const RecordsTable = ({ batchId }: Props) => {
                             <td className="px-4 py-4">{record.weight}</td>
                             {(activateInput && records.length === record.id) ?
                                 <td>
-                                    <form id='my-form' action={() => updateRecord(record.id)}>
-                                        <input type="number" autoFocus min={0} max={record.weight} placeholder="Sold(kg)" size={5} ref={soldRef}
+                                    <form id='my-form' action={(data: FormData) => updateRecordHandler(record.id, data, batchId)}>
+                                        <input type="number" name='sold' autoFocus min={0} max={record.weight}
+                                            placeholder={`${record.weightSold}(kg)`} size={5} ref={soldRef} onBlur={() => {
+                                                setTimeout(() => {
+                                                    setActivateInput(false)
+                                                }, 100)
+                                            }}
                                             className={`border-b-2 outline-none border-black text-gray-900 text-sm  block p-4`}
                                         />
                                     </form>
@@ -78,7 +92,7 @@ const RecordsTable = ({ batchId }: Props) => {
                                 {records.length === record.id ? <>
                                     {
                                         !activateInput ?
-                                            <AiOutlineEdit className='cursor-pointer text-green-600' onClick={handleSoldInput} /> :
+                                            <AiOutlineEdit className='cursor-pointer text-green-600' onClick={editButtonHandler} /> :
                                             <button form='my-form'><TiTick className='cursor-pointer text-green-600' /></button>
                                     }
                                 </> :

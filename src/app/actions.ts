@@ -31,6 +31,27 @@ export const fetchRecords = async (id: number) => {
         throw new Error(er.message, { cause: er })
     }
 }
+export const updateRecord = async (recordId: number, sold: number, batchId:number) => {
+    try {
+        const existingRecords = await fetchRecords(batchId)
+        const lastRecord = existingRecords[existingRecords.length - 1]
+        const weight = lastRecord.weight
+        if (lastRecord.id !== recordId) {
+            throw new Error("Can't Update this Record Data")
+        }
+        const updateRecord = await prisma.record.update({
+            where: {
+                id: recordId
+            },
+            data: {
+                weightSold: sold,
+                remaining: (weight - sold)
+            }
+        })
+    } catch (er: any) {
+        throw new Error(er.message, { cause: er })
+    }
+}
 export const addRecordData = async ({
     weight,
     batchId
