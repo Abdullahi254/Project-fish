@@ -7,6 +7,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { AiOutlineEdit } from "react-icons/ai"
 import { FcCancel } from "react-icons/fc"
 import { TiTickOutline as TiTick } from "react-icons/ti"
+import { AiOutlineLoading3Quarters as Spinner } from "react-icons/ai"
 
 
 type Props = {
@@ -16,15 +17,18 @@ type Props = {
 const RecordsTable = ({ batchId }: Props) => {
     const [records, setRecords] = useState<AsyncReturnType<typeof fetchRecords>>([])
     const [activateInput, setActivateInput] = useState<boolean>(false)
-
+    const [loading, setLoading] = useState<boolean>(false)
     const soldRef = useRef<HTMLInputElement>(null)
 
     const fetchData = React.useCallback(async () => {
         try {
+            setLoading(true)
             const records = await fetchRecords(batchId)
             setRecords(records)
+            setLoading(false)
         } catch (er: any) {
             console.log(er.message)
+            setLoading(false)
         }
     }, [batchId])
     useEffect(() => {
@@ -38,15 +42,17 @@ const RecordsTable = ({ batchId }: Props) => {
     }
     const updateRecordHandler = async (id: number, data: FormData, batchId: number) => {
         try {
+            setLoading(true)
             const sold = data.get("sold")?.valueOf()
             if (typeof (sold) !== undefined) {
                 console.log(id)
                 await updateRecord(id, Number(sold,), batchId)
                 setActivateInput(false)
-                fetchData()
+                await fetchData()
             }
         } catch (er: any) {
             console.log("error updating record", er.message)
+            setLoading(false)
         }
     }
     return (
@@ -102,6 +108,9 @@ const RecordsTable = ({ batchId }: Props) => {
                     }
                 </tbody>
             </table>
+            <div className='bg-white w-full flex justify-center py-1'>
+                {loading && <Spinner className=' text-lg animate-spin' />}
+            </div>
             <RecordInput addData={addRecordData} batchId={batchId} fetchData={fetchData} />
         </>
     )
