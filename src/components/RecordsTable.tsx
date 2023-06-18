@@ -42,13 +42,13 @@ const RecordsTable = ({ batchId }: Props) => {
     }
     const updateRecordHandler = async (id: number, data: FormData, batchId: number) => {
         try {
-            setLoading(true)
             const sold = data.get("sold")?.valueOf()
             if (typeof (sold) !== undefined) {
-                console.log(id)
+                console.log("loading", loading)
                 await updateRecord(id, Number(sold,), batchId)
                 setActivateInput(false)
                 await fetchData()
+                setLoading(false)
             }
         } catch (er: any) {
             console.log("error updating record", er.message)
@@ -99,7 +99,7 @@ const RecordsTable = ({ batchId }: Props) => {
                                     {
                                         !activateInput ?
                                             <AiOutlineEdit className='cursor-pointer text-green-600' onClick={editButtonHandler} /> :
-                                            <button form='my-form'><TiTick className='cursor-pointer text-green-600' /></button>
+                                            <button form='my-form' onClick={() => setLoading(true)}><TiTick className='cursor-pointer text-green-600' /></button>
                                     }
                                 </> :
                                     <FcCancel />}
