@@ -31,7 +31,7 @@ export const fetchRecords = async (id: number) => {
         throw new Error(er.message, { cause: er })
     }
 }
-export const updateRecord = async (recordId: number, sold: number, batchId:number) => {
+export const updateRecord = async (recordId: number, sold: number, batchId: number) => {
     try {
         const existingRecords = await fetchRecords(batchId)
         const lastRecord = existingRecords[existingRecords.length - 1]
@@ -52,6 +52,41 @@ export const updateRecord = async (recordId: number, sold: number, batchId:numbe
         throw new Error(er.message, { cause: er })
     }
 }
+export const updateWaterLoss = async (batchId: number, waterLoss: number) => {
+    try {
+        const batch = await prisma.batch.findUnique({
+            where: {
+                id: batchId
+            },
+            select: {
+                pricePerKilo: true,
+                totalWaterLoss: true,
+                estimatedLoss: true
+            }
+        });
+
+        if (!batch) {
+            throw new Error("Batch Fetching Error")
+        }
+
+        const pricePerKilo = batch.pricePerKilo;
+        const updatedTotalWaterLoss = (batch.totalWaterLoss || 0) + waterLoss;
+        const updatedEstimatedLoss = (batch.estimatedLoss || 0) + (pricePerKilo * waterLoss);
+
+        const updateBatch = await prisma.batch.update({
+            where: {
+                id: batchId
+            },
+            data: {
+                totalWaterLoss: updatedTotalWaterLoss,
+                estimatedLoss: updatedEstimatedLoss
+            }
+        });
+    } catch (er: any) {
+        throw new Error(er.message, { cause: er })
+    }
+};
+
 export const addRecordData = async ({
     weight,
     batchId
@@ -90,7 +125,7 @@ export const addRecordData = async ({
                     }
                 }
             })
-
+            await updateWaterLoss(batchId, waterLoss)
         }
     } catch (er: any) {
         throw new Error(er.message, { cause: er })
