@@ -18,6 +18,7 @@ const RecordsTable = ({ batchId }: Props) => {
     const [records, setRecords] = useState<AsyncReturnType<typeof fetchRecords>>([])
     const [activateInput, setActivateInput] = useState<boolean>(false)
     const [loading, setLoading] = useState<boolean>(false)
+    const [error, setError] = useState<string>('')
     const soldRef = useRef<HTMLInputElement>(null)
 
     const fetchData = React.useCallback(async () => {
@@ -29,12 +30,13 @@ const RecordsTable = ({ batchId }: Props) => {
         } catch (er: any) {
             console.log(er.message)
             setLoading(false)
+            setError(er.message)
         }
     }, [batchId])
     useEffect(() => {
 
         fetchData()
-        return ()=>{
+        return () => {
             setActivateInput(false)
             setRecords([])
         }
@@ -57,6 +59,7 @@ const RecordsTable = ({ batchId }: Props) => {
         } catch (er: any) {
             console.log("error updating record", er.message)
             setLoading(false)
+            setError(er.message)
         }
     }
     return (
@@ -111,7 +114,24 @@ const RecordsTable = ({ batchId }: Props) => {
             <div className='bg-white w-full flex justify-center py-1'>
                 {loading && <Spinner className=' text-lg animate-spin' />}
             </div>
-            <RecordInput addData={addRecordData} batchId={batchId} fetchData={fetchData} />
+            {error &&
+                <div className='bg-white w-full py-2'>
+                    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative flex justify-center" role="alert">
+                        <strong className="font-bold mr-1">Error! </strong>
+                        <span className="block sm:inline">{error}</span>
+                        <span className="absolute top-0 bottom-0 right-0 px-4 py-3 cursor-pointer text-lg font-bold" onClick={() => setError('')}>
+                            X
+                        </span>
+                    </div>
+                </div>
+            }
+            <RecordInput
+                addData={addRecordData}
+                batchId={batchId}
+                fetchData={fetchData}
+                setLoading={(state) => setLoading(state)}
+                getError={(error) => setError(error)}
+            />
         </>
     )
 }

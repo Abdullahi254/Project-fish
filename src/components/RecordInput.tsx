@@ -12,10 +12,12 @@ type Props = {
                 batchId: number
             }) => Promise<void>
     batchId: number,
-    fetchData: () => Promise<void>
+    fetchData: () => Promise<void>,
+    setLoading: (state: boolean) => void,
+    getError: (error:string)=>void
 }
 
-const RecordInput = ({ addData, batchId, fetchData }: Props) => {
+const RecordInput = ({ addData, batchId, fetchData, setLoading, getError }: Props) => {
     const [showForm, setShowForm] = useState<boolean>(false)
     const [weightSwitch, setWeightSwitch] = useState<boolean>(false)
     const [disableButton, setDisableButton] = useState<boolean>(true)
@@ -33,24 +35,27 @@ const RecordInput = ({ addData, batchId, fetchData }: Props) => {
             setWeightSwitch(false)
         }
     }
-    async function createRecord(data: FormData) {
-        console.log("adding...")
-        const weight = data.get("weight")?.valueOf()
-        if (typeof (weight) !== undefined) {
-            addData({
-                weight: Number(data.get("weight")?.valueOf()) as number,
-                batchId: batchId
-            }).then(() => {
-                console.log("added data successfully")
-                fetchData()
-                setWeightSwitch(false)
+    async function createRecord(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault()
+        try {
+            setLoading(true)
+            setWeightSwitch(false)
+            const weight = weightRef.current?.value
+            if (typeof (weight) !== undefined) {
+                await addData({
+                    weight: Number(weight),
+                    batchId: batchId
+                })
                 setShowForm(prev => !prev)
-            }).catch(er => {
-                console.log("error adding data", er.message)
-                setWeightSwitch(false)
-            })
+                fetchData()
+                setLoading(false)
+            }
+        } catch (er:any) {
+            setShowForm(prev => !prev)
+            setWeightSwitch(false)
+            setLoading(false)
+            getError(er.message)
         }
-
     }
     useEffect(() => {
         if (weightSwitch) {
@@ -69,7 +74,7 @@ const RecordInput = ({ addData, batchId, fetchData }: Props) => {
                         handleAddButton()
                     }} />
                 </div> :
-                    <form className="w-full max-w-[600px] mx-auto  py-2 flex-wrap" action={createRecord}>
+                    <form className="w-full max-w-[600px] mx-auto  py-2 flex-wrap" onSubmit={(e) => createRecord(e)}>
                         <div className="flex items-center  border-b border-gray-500 py-2">
                             <input name='weight' autoFocus className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" ref={weightRef} type='number' min="1" placeholder="New Weight(Kg)" onChange={handleWeightChange} />
                             <button className=" uppercase border-transparent disabled:bg-gray-300  flex-shrink-0 bg-gray-900 border-gray-500  text-sm  text-white py-1 px-2 rounded" type="submit" disabled={disableButton}>
