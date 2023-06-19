@@ -67,7 +67,7 @@ const RecordsTable = ({ batchId }: Props) => {
             <table className="w-full text-sm text-left text-gray-500 mb-2 border-x-2">
                 <thead className='text-xs text-gray-700 uppercase bg-gray-50'>
                     <tr>
-                        <th scope="col" className="px-4 py-3">Id</th>
+                        <th scope="col" className="px-4 py-3">NO</th>
                         <th scope="col" className="px-4 py-3">Weight(kg)</th>
                         <th scope="col" className="px-4 py-3">Sold(kg)</th>
                         <th scope="col" className="px-4 py-3">Remaining(kg)</th>
@@ -81,22 +81,22 @@ const RecordsTable = ({ batchId }: Props) => {
                             <th scope="row" className="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">
                                 {record.id}
                             </th>
-                            <td className="px-4 py-4">{record.weight}</td>
+                            <td className="px-4 py-4">{record.weight.toFixed(2)}</td>
                             {(activateInput && records.length === record.id) ?
                                 <td>
                                     <form id='my-form' onSubmit={(e) => updateRecordHandler(record.id, e, batchId)}>
                                         <input type="number" name='sold' autoFocus min={1} max={record.weight}
-                                            placeholder={`${record.weightSold}(kg)`} size={5} ref={soldRef}
+                                            placeholder={`${record.weightSold}(kg)`} size={5} ref={soldRef} step={0.01}
                                             className={`border-b-2 outline-none border-black text-gray-900 text-sm  block p-4`}
                                         />
                                     </form>
 
                                 </td> :
-                                <td className="px-4 py-4">{record.weightSold}</td>
+                                <td className="px-4 py-4">{record.weightSold.toFixed(2)}</td>
                             }
-                            <td className="px-4 py-4">{record.remaining}</td>
+                            <td className="px-4 py-4">{record.remaining.toFixed(2)}</td>
 
-                            <td className="px-4 py-4">{record.waterLoss}</td>
+                            <td className="px-4 py-4">{record.waterLoss.toFixed(2)}</td>
                             <td className="px-4 py-4">
                                 {records.length === record.id ? <>
                                     {

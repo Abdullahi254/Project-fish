@@ -83,7 +83,7 @@ const BatchInput = ({ addData }: Props) => {
                         <div className="flex items-center  border-b border-gray-500 py-2">
                             <input name='date' className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1  leading-tight focus:outline-none" ref={dateRef} type="date" onChange={handleDateChange} />
                             <input name='type' className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" ref={fishTypetRef} placeholder="Fish Type" onChange={handleTypeChange} />
-                            <input name='price' className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" min="1" ref={priceRef} type='number' placeholder="Price/Kilo(KSH)" onChange={handlePriceChange} />
+                            <input name='price' className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" min="1" ref={priceRef} type='number' placeholder="Price/Kilo(KSH)" onChange={handlePriceChange} step={0.01} />
                             <button className=" uppercase border-transparent disabled:bg-gray-300  flex-shrink-0 bg-gray-900 border-gray-500  text-sm  text-white py-1 px-2 rounded" type="submit" disabled={disableButton}>
                                 Add
                             </button>
