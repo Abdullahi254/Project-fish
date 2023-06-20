@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -8,17 +8,32 @@ import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai"
 import { GiBoatFishing } from "react-icons/gi"
 import FishIcon from "../asset/fish.png"
 import { signOut } from "next-auth/react"
+import { usePathname } from 'next/navigation'
 
 type Props = {}
 
 const Navbar = (props: Props) => {
   const [sideNav, setsideNav] = useState<boolean>(false)
+  const [shadow, setShadow] = useState<boolean>(false)
 
+  const pathname = usePathname()
   const handleNav = () => {
     setsideNav(prev => !prev)
   }
+
+  useEffect(() => {
+    const handleShadow = () => {
+      if (window.scrollY >= 90) {
+        setShadow(true)
+      } else {
+        setShadow(false)
+      }
+    }
+    window.addEventListener('scroll', handleShadow)
+  }, [])
+  console.log(pathname)
   return (
-    <nav className=" fixed top-0 w-full h-12 border-b-[1px] border-gray-500 px-8 z-[100]">
+    <nav className={shadow ? `shadow-xl bg-white fixed top-0 w-full h-12 border-b-[1px] border-gray-500 px-8 z-[100]` : ` bg-white fixed top-0 w-full h-12 border-b-[1px] border-gray-500 px-8 z-[100]`}>
       <div className='hidden lg:flex items-center h-full justify-between mx-auto max-w-7xl'>
 
         <div className='flex space-x-10 h-full items-center'>
@@ -27,13 +42,19 @@ const Navbar = (props: Props) => {
           </div>
           <div className='space-x-8'>
             <Link href="/">
-              <span className='text-gray-500 text-sm hover:text-gray-900 hover:underline'>Batch Record</span>
+              <span className={pathname == '/' ? `text-gray-500 text-sm hover:text-gray-900 underline font-semibold` : `text-gray-500 text-sm hover:text-gray-900 hover:underline`}>
+                Batch Record
+              </span>
             </Link>
             <Link href="/ledger">
-              <span className='text-gray-500 text-sm hover:text-gray-900 hover:underline'>Customer Ledger</span>
+              <span className={pathname == '/ledger' ? `text-gray-500 text-sm hover:text-gray-900 underline font-semibold` : `text-gray-500 text-sm hover:text-gray-900 hover:underline`}>
+                Customer Ledger
+              </span>
             </Link>
             <Link href="/analytics">
-              <span className='text-gray-500 text-sm hover:text-gray-900 hover:underline'>Analytics</span>
+              <span className={pathname == '/analytics' ? `text-gray-500 text-sm hover:text-gray-900 underline font-semibold` : `text-gray-500 text-sm hover:text-gray-900 hover:underline`}>
+                Analytics
+              </span>
             </Link>
           </div>
         </div>
@@ -77,13 +98,19 @@ const Navbar = (props: Props) => {
             <div className='py-4 flex flex-col'>
               <ul>
                 <Link href="/">
-                  <li className='py-6 text-gray-500 text-sm hover:font-semibold hover:border-b-2 border-gray-400' onClick={handleNav}>Batch Record</li>
+                  <li className={pathname == '/' ? `py-6 text-gray-500 text-sm font-semibold border-b-2 border-gray-400` : `py-6 text-gray-500 text-sm hover:font-semibold hover:border-b-2 border-gray-400`} onClick={handleNav}>
+                    Batch Record
+                  </li>
                 </Link>
                 <Link href="/ledger">
-                  <li className='py-6 text-gray-500 text-sm hover:font-semibold hover:border-b-2 border-gray-400' onClick={handleNav}>Customer Ledger</li>
+                  <li className={pathname == '/ledger' ? `py-6 text-gray-500 text-sm font-semibold border-b-2 border-gray-400` : `py-6 text-gray-500 text-sm hover:font-semibold hover:border-b-2 border-gray-400`} onClick={handleNav}>
+                    Customer Ledger
+                  </li>
                 </Link>
                 <Link href="/analytics">
-                  <li className='py-6 text-gray-500 text-sm hover:font-semibold hover:border-b-2 border-gray-400' onClick={handleNav}>Analytics</li>
+                  <li className={pathname == '/analytics' ? `py-6 text-gray-500 text-sm font-semibold border-b-2 border-gray-400` : `py-6 text-gray-500 text-sm hover:font-semibold hover:border-b-2 border-gray-400`} onClick={handleNav}>
+                    Analytics
+                  </li>
                 </Link>
               </ul>
             </div>

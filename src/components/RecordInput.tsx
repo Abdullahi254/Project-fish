@@ -1,6 +1,7 @@
 'use client';
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef} from 'react'
 import { MdAdd, } from 'react-icons/md'
+import { useRouter } from 'next/navigation';
 
 type Props = {
     addData: (
@@ -14,7 +15,7 @@ type Props = {
     batchId: number,
     fetchData: () => Promise<void>,
     setLoading: (state: boolean) => void,
-    getError: (error:string)=>void
+    getError: (error: string) => void
 }
 
 const RecordInput = ({ addData, batchId, fetchData, setLoading, getError }: Props) => {
@@ -22,6 +23,7 @@ const RecordInput = ({ addData, batchId, fetchData, setLoading, getError }: Prop
     const [weightSwitch, setWeightSwitch] = useState<boolean>(false)
     const [disableButton, setDisableButton] = useState<boolean>(true)
 
+    const router = useRouter()
 
     const weightRef = useRef<HTMLInputElement>(null)
 
@@ -49,8 +51,9 @@ const RecordInput = ({ addData, batchId, fetchData, setLoading, getError }: Prop
                 setShowForm(prev => !prev)
                 fetchData()
                 setLoading(false)
+                router.refresh()
             }
-        } catch (er:any) {
+        } catch (er: any) {
             setShowForm(prev => !prev)
             setWeightSwitch(false)
             setLoading(false)
