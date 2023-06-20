@@ -2,6 +2,8 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { MdAdd, } from 'react-icons/md'
 import { Batch } from '../app/actions';
+import { useRouter } from 'next/navigation';
+import { AiOutlineLoading3Quarters as Spinner } from "react-icons/ai"
 
 type Props = {
     addData: ({ date, type, price }: Batch) => Promise<void>
@@ -13,10 +15,14 @@ const BatchInput = ({ addData }: Props) => {
     const [typeSwitch, setTypeSwitch] = useState<boolean>(false)
     const [priceSwitch, setPriceSwitch] = useState<boolean>(false)
     const [disableButton, setDisableButton] = useState<boolean>(true)
+    const [loading, setLoading] = useState<boolean>(false)
+    const [error, setError] = useState<string>('dsdsd')
 
     const dateRef = useRef<HTMLInputElement>(null)
     const fishTypetRef = useRef<HTMLInputElement>(null)
     const priceRef = useRef<HTMLInputElement>(null)
+
+    const router = useRouter()
 
     const handleAddButton = () => {
         setShowForm(prev => !prev)
@@ -42,25 +48,32 @@ const BatchInput = ({ addData }: Props) => {
             setPriceSwitch(false)
         }
     }
-    async function createBatch(data: FormData) {
-        console.log("adding...")
-        const date = data.get("date")?.valueOf()
-        const type = data.get("type")?.valueOf()
-        const price = data.get("price")?.valueOf()
-        if (typeof (date) !== undefined && typeof (type) !== undefined && typeof (price) !== undefined) {
-            addData({
-                date: new Date(data.get("date")?.valueOf() as string),
-                type: data.get("type")?.valueOf() as string,
-                price: Number(data.get("price")?.valueOf()) as number
-            }).then(() => {
-                console.log("added data successfully")
+    async function createBatch(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault()
+        try {
+            setLoading(true)
+            const date = dateRef.current?.value
+            const type = fishTypetRef.current?.value
+            const price = priceRef.current?.value
+            if (typeof (date) !== undefined && typeof (type) !== undefined && typeof (price) !== undefined) {
+                await addData({
+                    date: new Date(date as string),
+                    type: type as string,
+                    price: Number(price as string)
+                })
+                setLoading(false)
                 setShowForm(prev => !prev)
-            }).catch(er => {
-                console.log("error adding data")
-                setShowForm(prev => !prev)
-            })
+                router.refresh()
+            }
+            else {
+                throw new Error("Error creating batch data")
+            }
+        } catch (er: any) {
+            setError(er.message)
+            setLoading(false)
+            setShowForm(prev => !prev)
+            router.refresh()
         }
-
     }
     useEffect(() => {
         if (dateSwitch && typeSwitch && priceSwitch) {
@@ -72,6 +85,21 @@ const BatchInput = ({ addData }: Props) => {
     }, [dateSwitch, typeSwitch, priceSwitch])
     return (
         <>
+            {error &&
+                <div className='bg-white w-full py-2'>
+                    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative flex justify-center" role="alert">
+                        <strong className="font-bold mr-1">Error! </strong>
+                        <span className="block sm:inline">{error}</span>
+                        <span className="absolute top-0 bottom-0 right-0 px-4 py-3 cursor-pointer text-lg font-bold" onClick={() => setError('')}>
+                            X
+                        </span>
+                    </div>
+                </div>
+            }
+            {loading && <div className='w-full py-2 flex justify-center'>
+                <Spinner className='animate-spin text-lg' />
+            </div>
+            }
             {
                 !showForm ? <div className='w-full py-2 flex justify-around'>
                     <MdAdd className='text-3xl cursor-pointer text-gray-600' onClick={(e) => {
@@ -79,12 +107,12 @@ const BatchInput = ({ addData }: Props) => {
                         handleAddButton()
                     }} />
                 </div> :
-                    <form className="w-full max-w-[600px] mx-auto  py-2 flex-wrap" action={createBatch}>
+                    <form className="w-full max-w-[600px] mx-auto  py-2 flex-wrap" onSubmit={(e) => createBatch(e)}>
                         <div className="flex items-center  border-b border-gray-500 py-2">
-                            <input name='date' className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1  leading-tight focus:outline-none" ref={dateRef} type="date" onChange={handleDateChange} />
-                            <input name='type' className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" ref={fishTypetRef} placeholder="Fish Type" onChange={handleTypeChange} />
-                            <input name='price' className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" min="1" ref={priceRef} type='number' placeholder="Price/Kilo(KSH)" onChange={handlePriceChange} step={0.01} />
-                            <button className=" uppercase border-transparent disabled:bg-gray-300  flex-shrink-0 bg-gray-900 border-gray-500  text-sm  text-white py-1 px-2 rounded" type="submit" disabled={disableButton}>
+                            <input name='date' disabled={loading} className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1  leading-tight focus:outline-none" ref={dateRef} type="date" onChange={handleDateChange} />
+                            <input name='type' disabled={loading} className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" ref={fishTypetRef} placeholder="Fish Type" onChange={handleTypeChange} />
+                            <input name='price' disabled={loading} className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" min="1" ref={priceRef} type='number' placeholder="Price/Kilo(KSH)" onChange={handlePriceChange} step={0.01} />
+                            <button className=" uppercase border-transparent disabled:bg-gray-300  flex-shrink-0 bg-gray-900 border-gray-500  text-sm  text-white py-1 px-2 rounded" type="submit" disabled={loading || disableButton}>
                                 Add
                             </button>
                             <button className="flex-shrink-0 border-transparent border-2 text-red-400 hover:text-red-700 text-sm py-1 px-2 rounded" type="button" onClick={handleAddButton}>
