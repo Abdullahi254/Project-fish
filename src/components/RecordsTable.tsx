@@ -77,12 +77,12 @@ const RecordsTable = ({ batchId }: Props) => {
                 </thead>
                 <tbody>
                     {
-                        records.map(record => <tr className='bg-white border-b' key={record.id}>
+                        records.map((record, index) => <tr className='bg-white border-b' key={record.id}>
                             <th scope="row" className="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                {record.id}
+                                {index+1}
                             </th>
                             <td className="px-4 py-4">{record.weight.toFixed(2)}</td>
-                            {(activateInput && records.length === record.id) ?
+                            {(activateInput && (records.length-1) === index) ?
                                 <td>
                                     <form id='my-form' onSubmit={(e) => updateRecordHandler(record.id, e, batchId)}>
                                         <input type="number" name='sold' autoFocus min={1} max={record.weight}
@@ -98,7 +98,7 @@ const RecordsTable = ({ batchId }: Props) => {
 
                             <td className="px-4 py-4">{record.waterLoss.toFixed(2)}</td>
                             <td className="px-4 py-4">
-                                {records.length === record.id ? <>
+                                {(records.length - 1) === index ? <>
                                     {
                                         !activateInput ?
                                             <AiOutlineEdit className='cursor-pointer text-green-600' onClick={editButtonHandler} /> :
