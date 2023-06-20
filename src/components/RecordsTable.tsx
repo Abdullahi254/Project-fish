@@ -7,7 +7,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { AiOutlineEdit } from "react-icons/ai"
 import { FcCancel } from "react-icons/fc"
 import { TiTickOutline as TiTick } from "react-icons/ti"
-import { AiOutlineLoading3Quarters as Spinner } from "react-icons/ai"
+import { AiOutlineLoading3Quarters as Spinner, AiFillCloseCircle as Close  } from "react-icons/ai"
 
 
 type Props = {
@@ -120,7 +120,7 @@ const RecordsTable = ({ batchId }: Props) => {
                         <strong className="font-bold mr-1">Error! </strong>
                         <span className="block sm:inline">{error}</span>
                         <span className="absolute top-0 bottom-0 right-0 px-4 py-3 cursor-pointer text-lg font-bold" onClick={() => setError('')}>
-                            X
+                            <Close/>
                         </span>
                     </div>
                 </div>

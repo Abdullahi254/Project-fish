@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { MdAdd, } from 'react-icons/md'
 import { Batch } from '../app/actions';
 import { useRouter } from 'next/navigation';
-import { AiOutlineLoading3Quarters as Spinner } from "react-icons/ai"
+import { AiOutlineLoading3Quarters as Spinner, AiFillCloseCircle as Close } from "react-icons/ai"
 
 type Props = {
     addData: ({ date, type, price }: Batch) => Promise<void>
@@ -16,7 +16,7 @@ const BatchInput = ({ addData }: Props) => {
     const [priceSwitch, setPriceSwitch] = useState<boolean>(false)
     const [disableButton, setDisableButton] = useState<boolean>(true)
     const [loading, setLoading] = useState<boolean>(false)
-    const [error, setError] = useState<string>('dsdsd')
+    const [error, setError] = useState<string>('')
 
     const dateRef = useRef<HTMLInputElement>(null)
     const fishTypetRef = useRef<HTMLInputElement>(null)
@@ -91,7 +91,7 @@ const BatchInput = ({ addData }: Props) => {
                         <strong className="font-bold mr-1">Error! </strong>
                         <span className="block sm:inline">{error}</span>
                         <span className="absolute top-0 bottom-0 right-0 px-4 py-3 cursor-pointer text-lg font-bold" onClick={() => setError('')}>
-                            X
+                            <Close/>
                         </span>
                     </div>
                 </div>
