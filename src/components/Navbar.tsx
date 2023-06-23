@@ -31,7 +31,6 @@ const Navbar = (props: Props) => {
     }
     window.addEventListener('scroll', handleShadow)
   }, [])
-  console.log(pathname)
   return (
     <nav className={shadow ? `shadow-xl bg-white fixed top-0 w-full h-12 border-b-[1px] border-gray-500 px-8 z-[100]` : ` bg-white fixed top-0 w-full h-12 border-b-[1px] border-gray-500 px-8 z-[100]`}>
       <div className='hidden lg:flex items-center h-full justify-between mx-auto max-w-7xl'>
