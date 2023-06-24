@@ -134,9 +134,31 @@ export const addRecordData = async ({
 
 export const fetchBatchData = async () => {
     try {
-        const batchList = await prisma.batch.findMany()
+        const batchList = await prisma.batch.findMany({
+            take: 5,
+            orderBy: {
+                id: 'desc',
+            }
+        })
         return batchList
     } catch (er: any) {
         throw new Error(er.message, { cause: er })
     }
 }
+
+export const fetchBatchesByDateRange = async (startDate: Date, endDate: Date) => {
+    try {
+        const batches = await prisma.batch.findMany({
+            where: {
+                batchDate: {
+                    gte: startDate, // Greater than or equal to the start date
+                    lte: endDate,   // Less than or equal to the end date
+                },
+            },
+        });
+
+        return batches
+    } catch (er: any) {
+        throw new Error(er.message, { cause: er })
+    }
+};

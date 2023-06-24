@@ -4,6 +4,7 @@ import { RiArrowDropDownLine } from "react-icons/ri"
 import RecordsTable from './RecordsTable';
 import { fetchBatchData } from '@/app/actions';
 import { AsyncReturnType } from "../../typing"
+import { useRouter } from 'next/navigation';
 
 type Props = {
     batchList: AsyncReturnType<typeof fetchBatchData>
@@ -16,6 +17,7 @@ const BatchTable = ({
     const [toogle, setToogle] = useState<boolean>()
     const firstDateRef = useRef<HTMLInputElement>(null)
     const secondDateRef = useRef<HTMLInputElement>(null)
+    const router = useRouter()
 
     const handlemore = (id: number) => {
         if (activeIds.includes(id)) {
@@ -35,11 +37,10 @@ const BatchTable = ({
     }
 
     useEffect(() => {
-        if (firstDateRef.current?.value && secondDateRef.current?.value){
-            console.log("FROM: ",firstDateRef.current.value)
-            console.log("TO: ",secondDateRef.current.value)
+        if (firstDateRef.current?.value && secondDateRef.current?.value) {
+            router.push(`/?start=${firstDateRef.current.value}&end=${secondDateRef.current.value}`)
         }
-    }, [toogle])
+    }, [toogle, router])
     return (
         <>
             <div className='w-full mb-2 space-x-4 py-2 pr-8 flex items-center justify-center md:justify-end'>
