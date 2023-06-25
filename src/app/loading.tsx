@@ -4,7 +4,9 @@ type Props = {}
 
 function loading({}: Props) {
   return (
-    <div>loading</div>
+    <div className='h-screen w-full bg-red-500 flex flex-col justify-center items-center'>
+      <div>Loading...</div>
+    </div>
   )
 }
 

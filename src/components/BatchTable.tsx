@@ -5,13 +5,18 @@ import RecordsTable from './RecordsTable';
 import { fetchBatchData } from '@/app/actions';
 import { AsyncReturnType } from "../../typing"
 import { useRouter } from 'next/navigation';
+import { RxReset } from "react-icons/rx"
 
 type Props = {
     batchList: AsyncReturnType<typeof fetchBatchData>
+    startDate: string | string[] | undefined
+    endDate: string | string[] | undefined
 }
 
 const BatchTable = ({
-    batchList
+    batchList,
+    startDate,
+    endDate
 }: Props) => {
     const [activeIds, setActiveIds] = useState<number[]>([])
     const [toogle, setToogle] = useState<boolean>()
@@ -36,6 +41,14 @@ const BatchTable = ({
         setToogle(prev => !prev)
     }
 
+    const clearDateFields = () => {
+        if (firstDateRef.current?.value && secondDateRef.current?.value) {
+            firstDateRef.current.value = ''
+            secondDateRef.current.value = ''
+        }
+        router.replace("/")
+    }
+
     useEffect(() => {
         if (firstDateRef.current?.value && secondDateRef.current?.value) {
             router.push(`/?start=${firstDateRef.current.value}&end=${secondDateRef.current.value}`)
@@ -49,6 +62,15 @@ const BatchTable = ({
                 <span className='text-sm text-gray-500'>To:</span>
                 <input type='date' ref={secondDateRef} className='text-sm text-gray-600' onChange={handleDateChange} />
             </div>
+            {(startDate && endDate) &&
+                <div className='w-full mb-2 flex justify-center items-center py-2 space-x-4 '>
+                    <p className='text-sm text-gray-600'>Date Selected:</p>
+                    <p className='text-sm font-semibold'>{startDate}</p>
+                    <p className='text-sm text-gray-600'>to</p>
+                    <p className='text-sm font-semibold'>{endDate}</p>
+                    <button onClick={clearDateFields}><RxReset className='text-green-500' /></button>
+                </div>
+            }
             <table className="w-full text-sm text-left text-gray-500">
                 <thead className='text-xs text-gray-700 uppercase bg-gray-50'>
                     <tr>
