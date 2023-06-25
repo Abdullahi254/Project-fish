@@ -76,8 +76,8 @@ const BatchTable = ({
                     <tr>
                         <th scope="col" className="px-6 py-3">Batch Date</th>
                         <th scope="col" className="px-6 py-3">Fish Type</th>
-                        <th scope="col" className="px-6 py-3">Total Water Loss(KG)</th>
                         <th scope="col" className="px-6 py-3">Price/Kilo(KSH)</th>
+                        <th scope="col" className="px-6 py-3">Total Water Loss(KG)</th>
                         <th scope="col" className="px-6 py-3">Estimated Loss(KSH)</th>
                         <th scope="col" className="px-6 py-3"></th>
                     </tr>
@@ -90,8 +90,8 @@ const BatchTable = ({
                                     {data.batchDate.toDateString()}
                                 </th>
                                 <td className="px-6 py-4">{data.type}</td>
-                                <td className="px-6 py-4">{data.totalWaterLoss?.toFixed(2)}</td>
                                 <td className="px-6 py-4">{data.pricePerKilo.toFixed(2)}</td>
+                                <td className="px-6 py-4">{data.totalWaterLoss?.toFixed(2)}</td>
                                 <td className="px-6 py-4">{data.estimatedLoss?.toFixed(2)}</td>
                                 <td className="py-4"><RiArrowDropDownLine className={activeIds.includes(data.id) ? `cursor-pointer text-black text-lg` : `cursor-pointer text-black rotate-180 text-lg`} onClick={() => handlemore(data.id)} /></td>
                             </tr>
