@@ -60,7 +60,7 @@ const Navbar = (props: Props) => {
 
         <div>
           <Link href="/">
-            <span className='bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium' onClick={() => signOut()}>Logout</span>
+            <span className='bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium' onClick={() => signOut({ callbackUrl: 'http://localhost:3000/signIn' })}>Logout</span>
           </Link>
         </div>
 
@@ -75,7 +75,7 @@ const Navbar = (props: Props) => {
         </div>
         <div>
           <Link href="/">
-            <span className='bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium' onClick={() => signOut()}>Logout</span>
+            <span className='bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium' onClick={() => signOut({ callbackUrl: 'http://localhost:3000/signIn' })}>Logout</span>
           </Link>
         </div>
       </div>
