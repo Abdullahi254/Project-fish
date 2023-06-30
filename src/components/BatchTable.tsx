@@ -46,7 +46,7 @@ const BatchTable = ({
             firstDateRef.current.value = ''
             secondDateRef.current.value = ''
         }
-        router.replace("/")
+        router.push("/")
     }
 
     useEffect(() => {
