@@ -84,7 +84,7 @@ const Navbar = (props: Props) => {
       <div className={sideNav ? 'fixed left-0 top-0 w-full h-screen bg-black/70 lg:hidden ' : ''}>
         <div
           className={sideNav ? 'fixed left-0 top-0 w-[75%] sm:w-[60%] lg:w-[45%] h-screen bg-[#ecf0f3] p-10 px-4  ease-in duration-500 flex flex-col justify-between z-[150]' :
-            'fixed left-[-150%] top-0 ease-in duration-500'}
+            'fixed left-[-150%] top-0 ease-in duration-150'}
         >
           <div className='relative'>
             <span className='absolute top-0 right-0 cursor-pointer rounded-full shadow-lg shadow-gray-400 p-3' onClick={handleNav}>
@@ -93,7 +93,7 @@ const Navbar = (props: Props) => {
             <div className='flex justify-center w-full items-center'>
               <GiBoatFishing className='text-[50px] text-gray-700' />
             </div>
-            <div className='border-b-2  border-gray-400 my-4 text-center' />
+            <div className='border-gray-400 my-4 text-center' />
             <div className='py-4 flex flex-col'>
               <ul>
                 <Link href="/">

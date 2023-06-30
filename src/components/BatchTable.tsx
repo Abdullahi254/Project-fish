@@ -56,14 +56,14 @@ const BatchTable = ({
     }, [toogle, router])
     return (
         <>
-            <div className='w-full mb-2 space-x-4 py-2 pr-8 flex items-center justify-center md:justify-end'>
+            <div className='w-full mb-2 space-x-4 py-2 px-2 md:px-8 flex items-center justify-start md:justify-end'>
                 <span className='text-sm text-gray-500'>From:</span>
                 <input type='date' ref={firstDateRef} className='text-sm text-gray-600' onChange={handleDateChange} />
                 <span className='text-sm text-gray-500'>To:</span>
                 <input type='date' ref={secondDateRef} className='text-sm text-gray-600' onChange={handleDateChange} />
             </div>
             {(startDate && endDate) &&
-                <div className='w-full mb-2 flex justify-center items-center py-2 space-x-4 '>
+                <div className='w-full mb-2 flex justify-start px-2 md:justify-center items-center py-2 space-x-4 '>
                     <p className='text-sm text-gray-600'>Date Selected:</p>
                     <p className='text-sm font-semibold'>{startDate}</p>
                     <p className='text-sm text-gray-600'>to</p>
