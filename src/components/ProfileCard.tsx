@@ -4,7 +4,7 @@ type Props = {}
 
 const ProfileCard = (props: Props) => {
     return (
-        <div className='w-full border border-gray-200 rounded-lg shadow bg-white flex p-2 justify-between flex-wrap space-y-2 items-center cursor-pointer'>
+        <div className='w-full border border-gray-200 rounded-lg shadow bg-white flex p-2 justify-between flex-wrap space-y-2 items-center cursor-pointer hover:shadow-lg'>
             <div className='flex space-x-2'>
                 <div className='relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full'>
                     <RxAvatar className='absolute w-12 h-10 text-gray-400 -left-1' />
