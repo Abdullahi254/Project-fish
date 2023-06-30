@@ -1,7 +1,9 @@
 import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
+import { Account, PrismaClient, User } from "@prisma/client";
+
+
 
 const globalForPrisma = global as unknown as {
     prisma: PrismaClient | undefined
@@ -33,9 +35,19 @@ export const authOptions = {
             // Allows callback URLs on the same origin
             else if (new URL(url).origin === baseUrl) return url
             return baseUrl
-        }
+        },
+        async signIn({ account, profile }:{
+            account:Account
+            profile?: User
+        }) {
+            if (account.provider === "google") {
+              return profile?.email == "abdush504@gmail.com"
+            }
+            return true // Do different verification for other providers that don't have `email_verified`
+          },
     }
 }
+// @ts-ignore: Unreachable code error
 const handler = NextAuth(authOptions)
 
 export { handler as GET, handler as POST }
