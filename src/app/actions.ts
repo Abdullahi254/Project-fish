@@ -24,6 +24,14 @@ export const addBatchData = async ({ date, type, price }: Batch) => {
 export const fetchClientsWithLatestTransactions = async () => {
     try {
         const clients = await prisma.client.findMany({
+            include:{
+                transactions:{
+                    orderBy:{
+                        createdAt:'desc'
+                    },
+                    take:1
+                },
+            },
             orderBy: {
                 transactions: {
                     _count: 'desc'

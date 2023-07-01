@@ -1,13 +1,26 @@
 import React from 'react'
 import ProfileCard from './ProfileCard'
+import { Client, Transaction } from '@prisma/client'
 
-type Props = {}
+type MyClient = Client & {
+    transactions: Transaction[]
+}
 
-const ClientList = (props: Props) => {
+type Props = {
+    clients: MyClient[]
+}
+
+const ClientList = ({ clients }: Props) => {
     return (
         <>
             <div className=' px-4 md:px-6 py-4 flex flex-col space-y-2'>
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(index => <ProfileCard key={index} />)}
+                {clients.map(data => <ProfileCard
+                    key={data.id}
+                    name={`${data.first} ${data.last}`}
+                    credit={data?.totalCredit}
+                    debit={data?.totalDebit}
+                    date={data?.transactions[0]?.createdAt}
+                />)}
             </div>
         </>
 

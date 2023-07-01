@@ -4,13 +4,14 @@ import { authOptions } from "../api/auth/[...nextauth]/route"
 import ClientList from "@/components/ClientList"
 import SearchForm from "@/components/SearchForm"
 import CustomerInput from "@/components/CustomerInput"
+import { addCLient, fetchClientsWithLatestTransactions } from "../actions"
 
 const Home = async ({
 }: {
 
     }) => {
     const session = await getServerSession(authOptions)
-
+    const clients = await fetchClientsWithLatestTransactions()
     if (!session) {
         console.log("no session")
         redirect('/signIn')
@@ -21,8 +22,8 @@ const Home = async ({
                     <div className="px-6">
                         <SearchForm />
                     </div>
-                    <ClientList />
-                    <CustomerInput/>
+                    <ClientList clients={clients}/>
+                    <CustomerInput addData={addCLient}/>
                 </div>
             </div>
         )

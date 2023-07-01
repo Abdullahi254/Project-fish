@@ -1,15 +1,18 @@
 'use client';
 import React, { useEffect, useState, useRef } from 'react'
 import { MdAdd, } from 'react-icons/md'
-import { Batch } from '../app/actions';
 import { useRouter } from 'next/navigation';
 import { AiOutlineLoading3Quarters as Spinner, AiFillCloseCircle as Close } from "react-icons/ai"
 
 type Props = {
-    
+    addData: ({ first, last, phoneNumber }: {
+        first: string
+        last: string
+        phoneNumber: string
+    }) => Promise<void>
 }
 
-const CustomerInput = ({}: Props) => {
+const CustomerInput = ({ addData }: Props) => {
     const [showForm, setShowForm] = useState<boolean>(false)
 
     const [nameSwitch, setNameSwitch] = useState<boolean>(false)
@@ -50,34 +53,42 @@ const CustomerInput = ({}: Props) => {
             setPhoneSwitch(false)
         }
     }
-    async function createBatch(e: React.FormEvent<HTMLFormElement>) {
+    async function createClient(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
         try {
             setLoading(true)
-            const name = nameRef.current?.value
+            const first = nameRef.current?.value
+            const last = name2Ref.current?.value
             const phone = phoneRef.current?.value
-            if (typeof (name) !== undefined && typeof (phone) !== undefined) {
-                // await addData({
-                //     date: new Date(date as string),
-                //     type: type as string,
-                //     price: Number(price as string)
-                // })
-                // setLoading(false)
-                // setShowForm(prev => !prev)
-                // router.refresh()
+            if (first && last && phone) {
+                await addData({
+                    first: first,
+                    last: last,
+                    phoneNumber: phone
+                })
+                router.refresh()
+                setLoading(false)
+                setShowForm(prev => !prev)
+                nameRef.current.value = ''
+                name2Ref.current.value = ''
+                phoneRef.current.value = ''
             }
             else {
-                throw new Error("Error creating batch data")
+                throw new Error("Error adding new Client")
             }
         } catch (er: any) {
             setError(er.message)
             setLoading(false)
             setShowForm(prev => !prev)
-            router.refresh()
+            if (nameRef.current?.value && name2Ref.current?.value && phoneRef.current?.value) {
+                nameRef.current.value = ''
+                name2Ref.current.value = ''
+                phoneRef.current.value = ''
+            }
         }
     }
     useEffect(() => {
-        if ( nameSwitch && name2Switch && phoneSwitch) {
+        if (nameSwitch && name2Switch && phoneSwitch) {
             setDisableButton(false)
         }
         else {
@@ -88,11 +99,11 @@ const CustomerInput = ({}: Props) => {
         <>
             {error &&
                 <div className='bg-white w-full py-2'>
-                    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative flex justify-center" role="alert">
-                        <strong className="font-bold mr-1">Error! </strong>
-                        <span className="block sm:inline">{error}</span>
+                    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative flex justify-center items-center" role="alert">
+                        <strong className="font-bold mr-1 text-sm">Error! </strong>
+                        <span className="block sm:inline text-sm">{error}</span>
                         <span className="absolute top-0 bottom-0 right-0 px-4 py-3 cursor-pointer text-lg font-bold" onClick={() => setError('')}>
-                            <Close/>
+                            <Close />
                         </span>
                     </div>
                 </div>
@@ -108,11 +119,11 @@ const CustomerInput = ({}: Props) => {
                         handleAddButton()
                     }} />
                 </div> :
-                    <form className="w-full max-w-[600px] mx-auto  py-2 flex-wrap" onSubmit={(e) => createBatch(e)}>
+                    <form className="w-full max-w-[600px] mx-auto  py-2 flex-wrap" onSubmit={(e) => createClient(e)}>
                         <div className="flex items-center  border-b border-gray-500 py-2">
                             <input name='name' disabled={loading} className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" ref={nameRef} placeholder="First" onChange={handleNameChange} />
-                            <input name='name' disabled={loading} className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" ref={name2Ref} placeholder="Last" onChange={handleName2Change} />
-                            <input name='phone' disabled={loading} className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" min="1" ref={phoneRef} type='number' placeholder="Phone" onChange={handlePhoneChange}/>
+                            <input name='name2' disabled={loading} className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" ref={name2Ref} placeholder="Last" onChange={handleName2Change} />
+                            <input name='phone' disabled={loading} className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" min="1" ref={phoneRef} type='number' placeholder="Phone" onChange={handlePhoneChange} />
                             <button className=" uppercase border-transparent disabled:bg-gray-300  flex-shrink-0 bg-gray-900 border-gray-500  text-sm  text-white py-1 px-2 rounded" type="submit" disabled={loading || disableButton}>
                                 Add
                             </button>
