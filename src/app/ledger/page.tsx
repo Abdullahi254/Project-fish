@@ -3,6 +3,7 @@ import { redirect } from "next/navigation"
 import { authOptions } from "../api/auth/[...nextauth]/route"
 import ClientList from "@/components/ClientList"
 import SearchForm from "@/components/SearchForm"
+import CustomerInput from "@/components/CustomerInput"
 
 const Home = async ({
 }: {
@@ -21,6 +22,7 @@ const Home = async ({
                         <SearchForm />
                     </div>
                     <ClientList />
+                    <CustomerInput/>
                 </div>
             </div>
         )
