@@ -81,3 +81,27 @@ model Record {
 
   @@index([batchId])
 }
+
+model Client {
+  id              Int          @id @default(autoincrement())
+  name            String
+  phoneNumber     String
+  totalDebit      Float
+  totalCredit     Float
+  transactions    Transaction[]
+}
+
+model Transaction {
+  id              Int          @id @default(autoincrement())
+  clientId        Int
+  client          Client       @relation(fields: [clientId], references: [id])
+  date            DateTime
+  debit           Float
+  credit          Float
+  debtBalance     Float
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  @@index([clientId])
+}
+
