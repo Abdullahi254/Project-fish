@@ -2,12 +2,16 @@
 import React, { useRef, useState } from 'react'
 import { RxReset } from "react-icons/rx"
 import { useRouter } from 'next/navigation';
+import { Transaction } from '@prisma/client';
 type Props = {
     startDate: string | string[] | undefined
     endDate: string | string[] | undefined
+    transactions: Transaction[]
+    totalDebit: number
+    totalCredit: number
 }
 
-const TransactionTable = ({ startDate, endDate }: Props) => {
+const TransactionTable = ({ startDate, endDate, transactions, totalCredit, totalDebit }: Props) => {
     const [toogle, setToogle] = useState<boolean>()
     const firstDateRef = useRef<HTMLInputElement>(null)
     const secondDateRef = useRef<HTMLInputElement>(null)
@@ -52,29 +56,29 @@ const TransactionTable = ({ startDate, endDate }: Props) => {
                         <th scope="col" className="px-6 py-3">Date</th>
                         <th scope="col" className="px-6 py-3">Debit(KSH)</th>
                         <th scope="col" className="px-6 py-3">Credit(KSH)</th>
-                        <th scope="col" className="px-6 py-3">Debt Balance(KSH)</th>
+                        <th scope="col" className="px-6 py-3">Balance(KSH)</th>
                     </tr>
                 </thead>
                 <tbody>
                     {
-                        [1, 2, 3, 4, 5, 6].map((data) => <React.Fragment key={data}>
+                        transactions.map((data) => <React.Fragment key={data.id}>
                             <tr className='bg-white border-b' >
-                                <td className="px-6 py-4">{data}</td>
+                                <td className="px-6 py-4">{data.id}</td>
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                    12/13/2020
+                                    {data.createdAt.toDateString()}
                                 </th>
-                                <td className="px-6 py-4"></td>
-                                <td className="px-6 py-4">1200.00</td>
-                                <td className="px-6 py-4">1200.00</td>
+                                <td className="px-6 py-4">{data?.debit}</td>
+                                <td className="px-6 py-4">{data?.credit}</td>
+                                <td className="px-6 py-4">{data.debtBalance}</td>
                             </tr>
                         </React.Fragment>)
                     }
                     <tr className='bg-white' >
                         <td className="px-6 py-4"></td>
                         <td className="px-6 py-4 font-bold text-black">TOTAL:</td>
-                        <td className="px-6 py-4">0.00</td>
-                        <td className="px-6 py-4">7200.00</td>
-                        <td className="px-6 py-4 font-bold text-black">7200.00</td>
+                        <td className="px-6 py-4">{totalDebit.toFixed(2)}</td>
+                        <td className="px-6 py-4">{totalCredit.toFixed(2)}</td>
+                        <td className="px-6 py-4 font-bold text-black">{(totalDebit - totalCredit).toFixed(2)}</td>
                     </tr>
                     <tr className='bg-white' >
                         <td className="px-6 py-4"></td>

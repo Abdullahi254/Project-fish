@@ -5,15 +5,15 @@ import { useRouter } from 'next/navigation';
 import { AiOutlineLoading3Quarters as Spinner, AiFillCloseCircle as Close } from "react-icons/ai"
 
 type Props = {
-    addData: ({ debit, credit }:{
-        id:number
-        debit?:number
-        credit?:number
-    } ) => Promise<void>
+    addData: ({ debit, credit }: {
+        id: number
+        debit?: number
+        credit?: number
+    }) => Promise<void>
     id: number
 }
 
-const TransactionInput = ({addData, id }: Props) => {
+const TransactionInput = ({ addData, id }: Props) => {
     const [showForm, setShowForm] = useState<boolean>(false)
     const [typeSwitch, setTypeSwitch] = useState<boolean>(false)
     const [priceSwitch, setPriceSwitch] = useState<boolean>(false)
@@ -30,8 +30,13 @@ const TransactionInput = ({addData, id }: Props) => {
         setShowForm(prev => !prev)
     }
     const handleTypeChange = () => {
-        if (typeRef.current?.value && typeRef.current?.value.length > 1) {
-            setTypeSwitch(true)
+        if (typeRef.current?.value) {
+            if (typeRef.current.value === 'debit' || typeRef.current.value === 'credit') {
+                setTypeSwitch(true)
+            }
+            else{
+                setTypeSwitch(false)
+            }
         } else {
             setTypeSwitch(false)
         }
@@ -49,11 +54,11 @@ const TransactionInput = ({addData, id }: Props) => {
             setLoading(true)
             const type = typeRef.current?.value
             const price = priceRef.current?.value
-            if ( type && price) {
+            if (type && price) {
                 await addData({
                     id: id,
                     debit: type === 'debit' ? Number(price) : undefined,
-                    credit: type === 'credit' ? Number(price): undefined
+                    credit: type === 'credit' ? Number(price) : undefined
                 })
                 setLoading(false)
                 setShowForm(prev => !prev)
@@ -108,7 +113,8 @@ const TransactionInput = ({addData, id }: Props) => {
                 </div> :
                     <form className="w-full max-w-[600px] mx-auto  py-2 flex-wrap" onSubmit={(e) => createBatch(e)}>
                         <div className="flex items-center  border-b border-gray-500 py-2">
-                            <select name='type' disabled={loading} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full py-2 px-1 cursor-pointer" ref={typeRef} onChange={handleTypeChange} defaultValue="credit">
+                            <select name='type' disabled={loading} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full py-2 px-1 cursor-pointer" ref={typeRef} onChange={handleTypeChange}>
+                                <option >Choose Transaction</option>
                                 <option value="debit">Debit</option>
                                 <option value="credit">Credit</option>
                             </select>
