@@ -6,12 +6,13 @@ type Props = {
     credit: number | null
     debit: number | null
     date: Date | undefined | null
+    id: number
 }
 
 const ProfileCard = (props: Props) => {
     return (
         <>
-            <Link href={`ledger/${props.name.replace(' ', '-')}`}>
+            <Link href={`ledger/${props.id}`}>
                 <div className='w-full border border-gray-200 rounded-lg shadow bg-white flex p-2 justify-between flex-wrap space-y-2 items-center cursor-pointer hover:shadow-lg'>
                     <div className='flex space-x-2'>
                         <div className='relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full'>

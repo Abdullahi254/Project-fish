@@ -24,10 +24,10 @@ export const addBatchData = async ({ date, type, price }: Batch) => {
 export const fetchClientsByName = async (name: string) => {
     try {
         const clients = await prisma.client.findMany({
-            where:{
-                OR:[
+            where: {
+                OR: [
                     {
-                        first:name
+                        first: name
                     },
                     {
                         last: name
@@ -99,6 +99,77 @@ export const addCLient = async ({
         throw new Error(er.message, { cause: er })
     }
 }
+
+export const fetchTransactions = async (id: number) => {
+    try {
+        const transactions = await prisma.transaction.findMany({
+            where: {
+                id
+            }
+        })
+        return transactions
+    } catch (er: any) {
+        throw new Error(er.message, { cause: er })
+    }
+}
+
+export const fetchLatestTransaction = async (id: number) => {
+    try {
+        const transactions = await fetchTransactions(id)
+        const lastTransaction = transactions[transactions.length - 1]
+        return lastTransaction
+    } catch (er: any) {
+        throw new Error(er.message, { cause: er })
+    }
+}
+
+export const updateClientTransactionValues = async (id: number, credit?: number, debit?: number) => {
+    try {
+        const client = await prisma.client.update({
+            where: { id: id },
+            data: {
+                totalCredit: {
+                    increment: credit ? credit : 0
+                },
+                totalDebit: {
+                    increment: debit ? debit : 0
+                }
+            }
+        })
+    } catch (er: any) {
+        throw new Error(er.message, { cause: er })
+    }
+}
+
+export const addTransaction = async (
+    { debit, credit, id }: {
+        debit?: number
+        credit?: number
+        id: number
+    }
+) => {
+    try {
+        const latestTransaction = await fetchLatestTransaction(id)
+        const balance = latestTransaction.debtBalance
+        const transaction = await prisma.transaction.create({
+            data: {
+                debit,
+                credit,
+                debtBalance: debit ? (balance + debit) : (credit ? (balance - credit) : balance),
+                client: {
+                    connect: {
+                        id
+                    }
+                }
+            }
+        })
+        await updateClientTransactionValues(id, credit, debit)
+
+    } catch (er: any) {
+        throw new Error(er.message, { cause: er })
+    }
+}
+
 
 export const fetchRecords = async (id: number) => {
     try {

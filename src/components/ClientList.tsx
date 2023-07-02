@@ -15,6 +15,7 @@ const ClientList = ({ clients }: Props) => {
         <>
             <div className=' px-4 md:px-6 py-4 flex flex-col space-y-2'>
                 {clients.map(data => <ProfileCard
+                    id ={data.id}
                     key={data.id}
                     name={`${data.first} ${data.last}`}
                     credit={data?.totalCredit}
