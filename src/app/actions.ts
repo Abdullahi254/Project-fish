@@ -70,7 +70,7 @@ export const fetchClientsWithLatestTransactions = async () => {
                     _count: 'desc'
                 }
             },
-            take: 10
+            take: 6
         })
         return clients
     } catch (er: any) {
