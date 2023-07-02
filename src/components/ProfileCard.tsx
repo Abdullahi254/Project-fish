@@ -12,7 +12,7 @@ type Props = {
 const ProfileCard = (props: Props) => {
     return (
         <>
-            <Link href={`ledger/${props.id}?debit=${props?.debit}&credit=${props?.credit}`}>
+            <Link href={`ledger/${props.id}`}>
                 <div className='w-full border border-gray-200 rounded-lg shadow bg-white flex p-2 justify-between flex-wrap space-y-2 items-center cursor-pointer hover:shadow-lg'>
                     <div className='flex space-x-2'>
                         <div className='relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full'>
@@ -22,7 +22,7 @@ const ProfileCard = (props: Props) => {
                             <h3 className='text-xs text-gray-500 font-semibold'>{props.name}</h3>
                             <div className='flex space-x-2 flex-wrap'>
                                 <p className='text-xs'><span className='text-red-500 mr-1'>Credit:</span>KSH{props.credit?.toFixed(2)}</p>
-                                <p className='text-xs'><span className='text-green-500 mr-1'>Debit:</span>KSH{props.credit?.toFixed(2)}</p>
+                                <p className='text-xs'><span className='text-green-500 mr-1'>Debit:</span>KSH{props.debit?.toFixed(2)}</p>
                             </div>
                         </div>
                     </div>

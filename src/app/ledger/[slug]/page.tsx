@@ -15,8 +15,6 @@ const Home = async ({
     const session = await getServerSession(authOptions)
     const startDate = searchParams["start"]
     const endDate = searchParams["end"]
-    const totalDebit = Number(searchParams['debit']) || 0
-    const totalCredit = Number(searchParams['credit']) || 0
     const transactions = await fetchTransactions(Number(params.slug))
     if (!session) {
         console.log("no session")
@@ -25,7 +23,7 @@ const Home = async ({
         return (
             <div className="mt-12 w-full">
                 <div className="max-w-7xl mx-auto relative overflow-x-auto p-4">
-                    <TransactionTable startDate={startDate} endDate={endDate} transactions={transactions} totalDebit={totalDebit} totalCredit={totalCredit}/>
+                    <TransactionTable startDate={startDate} endDate={endDate} transactions={transactions}/>
                     <TransactionInput addData={addTransaction} id={Number(params.slug)} />
                 </div>
             </div>

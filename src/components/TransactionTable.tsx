@@ -1,5 +1,5 @@
 'use client';
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { RxReset } from "react-icons/rx"
 import { useRouter } from 'next/navigation';
 import { Transaction } from '@prisma/client';
@@ -7,12 +7,13 @@ type Props = {
     startDate: string | string[] | undefined
     endDate: string | string[] | undefined
     transactions: Transaction[]
-    totalDebit: number
-    totalCredit: number
+
 }
 
-const TransactionTable = ({ startDate, endDate, transactions, totalCredit, totalDebit }: Props) => {
+const TransactionTable = ({ startDate, endDate, transactions}: Props) => {
     const [toogle, setToogle] = useState<boolean>()
+    const [totalCredit, setTotalCredit] = useState<number>(0)
+    const [totalDebit, setTotalDebit] = useState<number>(0)
     const firstDateRef = useRef<HTMLInputElement>(null)
     const secondDateRef = useRef<HTMLInputElement>(null)
 
@@ -32,6 +33,26 @@ const TransactionTable = ({ startDate, endDate, transactions, totalCredit, total
         router.push("/")
     }
 
+    useEffect(()=>{
+        const debits = transactions.map(data=>data.debit)
+        const credits = transactions.map(data=>data.credit)
+        const creditSum: number = credits.reduce((accumulator: number, currentValue)=>{
+            if (currentValue === null) {
+                return accumulator;
+              } else {
+                return accumulator + currentValue;
+              }
+        }, 0)
+        const debitSum: number = debits.reduce((accumulator: number, currentValue)=>{
+            if (currentValue === null) {
+                return accumulator;
+              } else {
+                return accumulator + currentValue;
+              }
+        }, 0)
+        setTotalCredit(creditSum)
+        setTotalDebit(debitSum)
+    }, [totalCredit, totalDebit, transactions])
     return (
         <>
             <div className='w-full mb-2 space-x-4 py-2 px-2 md:px-8 flex items-center justify-start md:justify-end'>
@@ -67,9 +88,9 @@ const TransactionTable = ({ startDate, endDate, transactions, totalCredit, total
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                                     {data.createdAt.toDateString()}
                                 </th>
-                                <td className="px-6 py-4">{data?.debit}</td>
-                                <td className="px-6 py-4">{data?.credit}</td>
-                                <td className="px-6 py-4">{data.debtBalance}</td>
+                                <td className="px-6 py-4">{data?.debit?.toFixed(2)}</td>
+                                <td className="px-6 py-4">{data?.credit?.toFixed(2)}</td>
+                                <td className="px-6 py-4">{data.debtBalance.toFixed(2)}</td>
                             </tr>
                         </React.Fragment>)
                     }

@@ -92,7 +92,9 @@ export const addCLient = async ({
             data: {
                 first,
                 last,
-                phoneNumber
+                phoneNumber,
+                totalCredit: 0,
+                totalDebit: 0
             }
         })
     } catch (er: any) {
@@ -167,7 +169,7 @@ export const addTransaction = async (
                     }
                 }
             })
-            await updateClientTransactionValues(id, credit, debit)
+            await updateClientTransactionValues(transaction.clientId, credit, debit)
         }else{
             const transaction = await prisma.transaction.create({
                 data: {
@@ -181,7 +183,7 @@ export const addTransaction = async (
                     }
                 }
             })
-            await updateClientTransactionValues(id, credit, debit)
+            await updateClientTransactionValues(transaction.clientId, credit, debit)
         }
 
     } catch (er: any) {
