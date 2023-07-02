@@ -21,15 +21,48 @@ export const addBatchData = async ({ date, type, price }: Batch) => {
 
 }
 
+export const fetchClientsByName = async (name: string) => {
+    try {
+        const clients = await prisma.client.findMany({
+            where:{
+                OR:[
+                    {
+                        first:name
+                    },
+                    {
+                        last: name
+                    }
+                ]
+            },
+            include: {
+                transactions: {
+                    orderBy: {
+                        createdAt: 'desc'
+                    },
+                    take: 1
+                },
+            },
+            orderBy: {
+                transactions: {
+                    _count: 'desc'
+                }
+            },
+        })
+        return clients
+    } catch (er: any) {
+        throw new Error(er.message, { cause: er })
+    }
+}
+
 export const fetchClientsWithLatestTransactions = async () => {
     try {
         const clients = await prisma.client.findMany({
-            include:{
-                transactions:{
-                    orderBy:{
-                        createdAt:'desc'
+            include: {
+                transactions: {
+                    orderBy: {
+                        createdAt: 'desc'
                     },
-                    take:1
+                    take: 1
                 },
             },
             orderBy: {

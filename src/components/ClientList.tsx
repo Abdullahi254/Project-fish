@@ -2,7 +2,7 @@ import React from 'react'
 import ProfileCard from './ProfileCard'
 import { Client, Transaction } from '@prisma/client'
 
-type MyClient = Client & {
+export type MyClient = Client & {
     transactions: Transaction[]
 }
 
