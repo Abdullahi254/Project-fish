@@ -1,11 +1,12 @@
 'use client';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useTransition } from 'react';
 import { RiArrowDropDownLine } from "react-icons/ri"
 import RecordsTable from './RecordsTable';
 import { fetchBatchData } from '@/app/actions';
 import { AsyncReturnType } from "../../typing"
 import { useRouter } from 'next/navigation';
 import { RxReset } from "react-icons/rx"
+import { AiOutlineLoading3Quarters as Spinner } from 'react-icons/ai'
 
 type Props = {
     batchList: AsyncReturnType<typeof fetchBatchData>
@@ -22,6 +23,7 @@ const BatchTable = ({
     const [toogle, setToogle] = useState<boolean>()
     const firstDateRef = useRef<HTMLInputElement>(null)
     const secondDateRef = useRef<HTMLInputElement>(null)
+    const [isPending, startTransition] = useTransition()
     const router = useRouter()
 
     const handlemore = (id: number) => {
@@ -50,8 +52,12 @@ const BatchTable = ({
     }
 
     useEffect(() => {
-        if (firstDateRef.current?.value && secondDateRef.current?.value) {
-            router.push(`/?start=${firstDateRef.current.value}&end=${secondDateRef.current.value}`)
+        const first = firstDateRef.current?.value
+        const second = secondDateRef.current?.value
+        if (first && second) {
+            startTransition(() => {
+                router.push(`/?start=${first}&end=${second}`)
+            })
         }
     }, [toogle, router])
     return (
@@ -62,6 +68,11 @@ const BatchTable = ({
                 <span className='text-sm text-gray-500'>To:</span>
                 <input type='date' ref={secondDateRef} className='text-sm text-gray-600' onChange={handleDateChange} />
             </div>
+            { isPending &&
+                <div className='w-full flex justify-center py-2'>
+                    <Spinner className='animate-spin'/>
+                </div>
+            }
             {(startDate && endDate) &&
                 <div className='w-full mb-2 flex justify-start px-2 md:justify-center items-center py-2 space-x-4 '>
                     <p className='text-sm text-gray-600'>Date Selected:</p>
