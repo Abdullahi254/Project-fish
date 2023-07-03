@@ -102,6 +102,24 @@ export const addCLient = async ({
     }
 }
 
+export const fetchTransactionsByDateRange = async (startDate: Date, endDate: Date, clientID:number) => {
+    try {
+        const transactions = await prisma.transaction.findMany({
+            where: {
+                clientId: clientID,
+                createdAt: {
+                    gte: startDate, // Greater than or equal to the start date
+                    lte: endDate,   // Less than or equal to the end date
+                },
+            },
+        });
+
+        return transactions
+    } catch (er: any) {
+        throw new Error(er.message, { cause: er })
+    }
+};
+
 export const fetchTransactions = async (id: number) => {
     try {
         const transactions = await prisma.transaction.findMany({
