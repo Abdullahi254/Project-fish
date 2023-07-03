@@ -24,6 +24,8 @@ const BatchTable = ({
     const firstDateRef = useRef<HTMLInputElement>(null)
     const secondDateRef = useRef<HTMLInputElement>(null)
     const [isPending, startTransition] = useTransition()
+    const [date1, setDate1] = useState<Date>()
+    const [date2, setDate2] = useState<Date>()
     const router = useRouter()
 
     const handlemore = (id: number) => {
@@ -60,6 +62,12 @@ const BatchTable = ({
             })
         }
     }, [toogle, router])
+    useEffect(()=>{
+        const d1 = new Date(startDate as string)
+        const d2 = new Date(endDate as string)
+        setDate1(d1)
+        setDate2(d2)
+    },[startDate, endDate])
     return (
         <>
             <div className='w-full mb-2 space-x-4 py-2 px-2 md:px-8 flex items-center justify-start md:justify-end'>
@@ -76,9 +84,9 @@ const BatchTable = ({
             {(startDate && endDate) &&
                 <div className='w-full mb-2 flex justify-start px-2 md:justify-center items-center py-2 space-x-4 '>
                     <p className='text-sm text-gray-600'>Date Selected:</p>
-                    <p className='text-sm font-semibold'>{startDate}</p>
+                    <p className='text-sm font-semibold'>{date1?.toDateString()}</p>
                     <p className='text-sm text-gray-600'>to</p>
-                    <p className='text-sm font-semibold'>{endDate}</p>
+                    <p className='text-sm font-semibold'>{date2?.toDateString()}</p>
                     <button onClick={clearDateFields}><RxReset className='text-green-500' /></button>
                 </div>
             }
