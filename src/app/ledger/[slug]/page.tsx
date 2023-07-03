@@ -15,6 +15,7 @@ const Home = async ({
     const session = await getServerSession(authOptions)
     const startDate = searchParams["start"]
     const endDate = searchParams["end"]
+    const name = searchParams["name"]
     const transactions = await fetchLatestFiveTransactions(Number(params.slug))
     if (!session) {
         console.log("no session")
@@ -23,7 +24,7 @@ const Home = async ({
         return (
             <div className="mt-12 w-full">
                 <div className="max-w-7xl mx-auto relative overflow-x-auto p-4">
-                    <TransactionTable startDate={startDate} endDate={endDate} transactions={transactions} slug={params.slug}/>
+                    <TransactionTable startDate={startDate} endDate={endDate} transactions={transactions} slug={params.slug} customerName={name}/>
                     <TransactionInput addData={addTransaction} id={Number(params.slug)} />
                 </div>
             </div>

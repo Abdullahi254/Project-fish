@@ -9,9 +9,10 @@ type Props = {
     endDate: string | string[] | undefined
     transactions: Transaction[]
     slug: string
+    customerName : string | string[] | undefined
 }
 
-const TransactionTable = ({ startDate, endDate, transactions, slug }: Props) => {
+const TransactionTable = ({ startDate, endDate, transactions, slug, customerName }: Props) => {
     const [toogle, setToogle] = useState<boolean>()
     const [totalCredit, setTotalCredit] = useState<number>(0)
     const [totalDebit, setTotalDebit] = useState<number>(0)
@@ -34,7 +35,7 @@ const TransactionTable = ({ startDate, endDate, transactions, slug }: Props) => 
                 firstDateRef.current.value = ''
                 secondDateRef.current.value = ''
             }
-            router.push(`/ledger/${slug}?table=full`)
+            router.push(`/ledger/${slug}?name=${customerName}&table=full`)
             setTable(true)
         })
     }
@@ -45,10 +46,10 @@ const TransactionTable = ({ startDate, endDate, transactions, slug }: Props) => 
                 firstDateRef.current.value = ''
                 secondDateRef.current.value = ''
             }
-            router.push(`/ledger/${slug}`)
+            router.push(`/ledger/${slug}?name=${customerName}`)
             setTable(false)
         })
-    }, [router, slug])
+    }, [router, slug, customerName])
 
     const clearDateFields = () => {
         if (firstDateRef.current?.value && secondDateRef.current?.value) {
@@ -56,7 +57,7 @@ const TransactionTable = ({ startDate, endDate, transactions, slug }: Props) => 
             secondDateRef.current.value = ''
         }
         startTransition2(() => {
-            router.push(`/ledger/${slug}`)
+            router.push(`/ledger/${slug}?name=${customerName}`)
         })
     }
 
@@ -86,12 +87,12 @@ const TransactionTable = ({ startDate, endDate, transactions, slug }: Props) => 
         const second = secondDateRef.current?.value
         if (first && second) {
             startTransition2(() => {
-                router.push(`/ledger/${slug}`)
+                router.push(`/ledger/${slug}?name=${customerName}`)
                 setTable(false)
-                router.push(`/ledger/${slug}?start=${first}&end=${second}`)
+                router.push(`/ledger/${slug}?name=${customerName}&start=${first}&end=${second}`)
             })
         }
-    }, [toogle, router, slug, handlelessTable])
+    }, [toogle, router, slug, handlelessTable, customerName])
     return (
         <>
             <div className='w-full mb-2 space-x-4 py-2 px-2 md:px-8 flex items-center justify-start md:justify-end'>
@@ -100,7 +101,9 @@ const TransactionTable = ({ startDate, endDate, transactions, slug }: Props) => 
                 <span className='text-sm text-gray-500'>To:</span>
                 <input type='date' ref={secondDateRef} className='text-sm text-gray-600' onChange={handleDateChange} />
             </div>
-
+            <div className='w-full mb-2 space-x-4 py-2 px-2 md:px-8 flex items-center justify-start md:justify-end'>
+                <h3 className='text-sm font-bold uppercase'>{customerName}</h3>
+            </div>
             {isPending2 &&
                 <div className='w-full flex justify-center py-2'>
                     <Spinner className='animate-spin' />

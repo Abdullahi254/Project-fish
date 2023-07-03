@@ -17,7 +17,7 @@ const ClientList = ({ clients }: Props) => {
                 {clients.map(data => <ProfileCard
                     id ={data.id}
                     key={data.id}
-                    name={`${data.first} ${data.last}`}
+                    name={`${data.first}-${data.last}`}
                     credit={data?.totalCredit}
                     debit={data?.totalDebit}
                     date={data?.transactions[0]?.createdAt}
