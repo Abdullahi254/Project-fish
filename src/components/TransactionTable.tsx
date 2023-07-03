@@ -1,23 +1,26 @@
 'use client';
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect, useTransition, useCallback } from 'react'
 import { RxReset } from "react-icons/rx"
 import { useRouter } from 'next/navigation';
 import { Transaction } from '@prisma/client';
+import { AiOutlineLoading3Quarters as Spinner } from 'react-icons/ai'
 type Props = {
     startDate: string | string[] | undefined
     endDate: string | string[] | undefined
     transactions: Transaction[]
-
+    slug: string
 }
 
-const TransactionTable = ({ startDate, endDate, transactions}: Props) => {
+const TransactionTable = ({ startDate, endDate, transactions, slug }: Props) => {
     const [toogle, setToogle] = useState<boolean>()
     const [totalCredit, setTotalCredit] = useState<number>(0)
     const [totalDebit, setTotalDebit] = useState<number>(0)
+    const [isFull, setTable] = useState<boolean>(false)
     const firstDateRef = useRef<HTMLInputElement>(null)
     const secondDateRef = useRef<HTMLInputElement>(null)
 
-
+    const [isPending, startTransition] = useTransition()
+    const [isPending2, startTransition2] = useTransition()
 
     const router = useRouter()
 
@@ -25,34 +28,70 @@ const TransactionTable = ({ startDate, endDate, transactions}: Props) => {
         setToogle(prev => !prev)
     }
 
+    const handleFullTable = () => {
+        startTransition(() => {
+            if (firstDateRef.current?.value && secondDateRef.current?.value) {
+                firstDateRef.current.value = ''
+                secondDateRef.current.value = ''
+            }
+            router.push(`/ledger/${slug}?table=full`)
+            setTable(true)
+        })
+    }
+
+    const handlelessTable = useCallback(() => {
+        startTransition(() => {
+            if (firstDateRef.current?.value && secondDateRef.current?.value) {
+                firstDateRef.current.value = ''
+                secondDateRef.current.value = ''
+            }
+            router.push(`/ledger/${slug}`)
+            setTable(false)
+        })
+    }, [router, slug])
+
     const clearDateFields = () => {
         if (firstDateRef.current?.value && secondDateRef.current?.value) {
             firstDateRef.current.value = ''
             secondDateRef.current.value = ''
         }
-        router.push("/")
+        startTransition2(() => {
+            router.push(`/ledger/${slug}`)
+        })
     }
 
-    useEffect(()=>{
-        const debits = transactions.map(data=>data.debit)
-        const credits = transactions.map(data=>data.credit)
-        const creditSum: number = credits.reduce((accumulator: number, currentValue)=>{
+    useEffect(() => {
+        const debits = transactions.map(data => data.debit)
+        const credits = transactions.map(data => data.credit)
+        const creditSum: number = credits.reduce((accumulator: number, currentValue) => {
             if (currentValue === null) {
                 return accumulator;
-              } else {
+            } else {
                 return accumulator + currentValue;
-              }
+            }
         }, 0)
-        const debitSum: number = debits.reduce((accumulator: number, currentValue)=>{
+        const debitSum: number = debits.reduce((accumulator: number, currentValue) => {
             if (currentValue === null) {
                 return accumulator;
-              } else {
+            } else {
                 return accumulator + currentValue;
-              }
+            }
         }, 0)
         setTotalCredit(creditSum)
         setTotalDebit(debitSum)
     }, [totalCredit, totalDebit, transactions])
+
+    useEffect(() => {
+        const first = firstDateRef.current?.value
+        const second = secondDateRef.current?.value
+        if (first && second) {
+            startTransition2(() => {
+                router.push(`/ledger/${slug}`)
+                setTable(false)
+                router.push(`/ledger/${slug}?start=${first}&end=${second}`)
+            })
+        }
+    }, [toogle, router, slug, handlelessTable])
     return (
         <>
             <div className='w-full mb-2 space-x-4 py-2 px-2 md:px-8 flex items-center justify-start md:justify-end'>
@@ -61,6 +100,21 @@ const TransactionTable = ({ startDate, endDate, transactions}: Props) => {
                 <span className='text-sm text-gray-500'>To:</span>
                 <input type='date' ref={secondDateRef} className='text-sm text-gray-600' onChange={handleDateChange} />
             </div>
+
+            {isPending2 &&
+                <div className='w-full flex justify-center py-2'>
+                    <Spinner className='animate-spin' />
+                </div>
+            }
+
+            {
+                (!startDate && !endDate) &&
+                <div className='w-full flex justify-center py-2'>
+                    {!isFull ? <h3 className='text-sm font-bold underline uppercase'>Latest Transactions</h3> :
+                        <h3 className='text-sm font-bold underline uppercase'>Full Table</h3>}
+                </div>
+            }
+
             {(startDate && endDate) &&
                 <div className='w-full mb-2 flex justify-start px-2 md:justify-center items-center py-2 space-x-4 '>
                     <p className='text-sm text-gray-600'>Date Selected:</p>
@@ -73,7 +127,6 @@ const TransactionTable = ({ startDate, endDate, transactions}: Props) => {
             <table className="w-full text-sm text-left text-gray-500">
                 <thead className='text-xs text-gray-700 uppercase bg-gray-50'>
                     <tr>
-                        <th scope="col" className="px-6 py-3">NO</th>
                         <th scope="col" className="px-6 py-3">Date</th>
                         <th scope="col" className="px-6 py-3">Debit(KSH)</th>
                         <th scope="col" className="px-6 py-3">Credit(KSH)</th>
@@ -84,7 +137,6 @@ const TransactionTable = ({ startDate, endDate, transactions}: Props) => {
                     {
                         transactions.map((data) => <React.Fragment key={data.id}>
                             <tr className='bg-white border-b' >
-                                <td className="px-6 py-4">{data.id}</td>
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                                     {data.createdAt.toDateString()}
                                 </th>
@@ -95,21 +147,28 @@ const TransactionTable = ({ startDate, endDate, transactions}: Props) => {
                         </React.Fragment>)
                     }
                     <tr className='bg-white' >
-                        <td className="px-6 py-4"></td>
                         <td className="px-6 py-4 font-bold text-black">TOTAL:</td>
                         <td className="px-6 py-4">{totalDebit.toFixed(2)}</td>
                         <td className="px-6 py-4">{totalCredit.toFixed(2)}</td>
                         <td className="px-6 py-4 font-bold text-black">{(totalDebit - totalCredit).toFixed(2)}</td>
                     </tr>
-                    <tr className='bg-white' >
+                    <tr className='bg-white'>
                         <td className="px-6 py-4"></td>
                         <td className="px-6 py-4"></td>
                         <td className="px-6 py-4"></td>
-                        <td className="px-6 py-4"></td>
-                        <td className="px-6 py-4"><button className='text-blue-600 hover:text-indigo-900 text-sm'>Full table</button></td>
+                        {
+                            isFull ?
+                                <td className="px-6 py-4"><button className='text-blue-600 hover:text-indigo-900 text-sm' onClick={handlelessTable}>Show less</button></td> :
+                                <td className="px-6 py-4"><button className='text-blue-600 hover:text-indigo-900 text-sm' onClick={handleFullTable}>Full table</button></td>
+                        }
                     </tr>
                 </tbody>
             </table>
+            {isPending &&
+                <div className='w-full flex justify-center py-2'>
+                    <Spinner className='animate-spin' />
+                </div>
+            }
         </>
     )
 }

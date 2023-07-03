@@ -114,6 +114,22 @@ export const fetchTransactions = async (id: number) => {
         throw new Error(er.message, { cause: er })
     }
 }
+export const fetchLatestFiveTransactions = async (clientID:number) => {
+    try {
+        const transactions = await prisma.transaction.findMany({
+            where:{
+                clientId: clientID
+            },
+            take: 5,
+            orderBy: {
+                id: 'desc',
+            }
+        })
+        return transactions
+    } catch (er: any) {
+        throw new Error(er.message, { cause: er })
+    }
+}
 
 export const fetchLatestTransaction = async (id: number) => {
     try {
