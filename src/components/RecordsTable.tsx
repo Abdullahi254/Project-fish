@@ -1,13 +1,13 @@
 'use client'
 
 import RecordInput from './RecordInput'
-import { addRecordData, fetchRecords} from '@/app/actions'
+import { addRecordData, fetchRecords } from '@/app/actions'
 import { AsyncReturnType } from "../../typing"
 import React, { useEffect, useState, useTransition } from 'react'
 import { AiOutlineEdit } from "react-icons/ai"
 import { AiOutlineLoading3Quarters as Spinner, AiFillCloseCircle as Close } from "react-icons/ai"
 import { useRouter } from 'next/navigation'
-import {FcCancel} from "react-icons/fc"
+import { FcCancel } from "react-icons/fc"
 
 
 type Props = {
@@ -68,10 +68,14 @@ const RecordsTable = ({ batchId }: Props) => {
 
                                     <AiOutlineEdit className='cursor-pointer text-green-600' onClick={() => {
                                         startTransition(() => {
-                                            router.push(`/records/${record.id}?batch=${batchId}&max=${record.remaining}`)
+                                            router.push(`/records/${record.id}?batch=${batchId}&max=${record.remaining}&show=true`)
                                         })
                                     }} /> :
-                                    <FcCancel className='cursor-not-allowed'/>
+                                    <AiOutlineEdit className='cursor-pointer text-gray-400' onClick={() => {
+                                        startTransition(() => {
+                                            router.push(`/records/${record.id}?batch=${batchId}&max=${record.remaining}`)
+                                        })
+                                    }} />
                                 }
 
                             </td>

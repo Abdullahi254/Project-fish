@@ -16,6 +16,7 @@ const Home = async ({
 }) => {
     const batchId = searchParams["batch"]
     const max = searchParams["max"]
+    const show = searchParams["show"]
     const session = await getServerSession(authOptions)
     const soldList = await fetchSold(Number(params.slug))
     if (!session) {
@@ -26,7 +27,7 @@ const Home = async ({
             <div className="mt-12 w-full">
                 <div className="max-w-7xl mx-auto relative overflow-x-auto p-4">
                     <SoldTable soldList={soldList}/>
-                    <SoldInput batchId={Number(batchId)} recordId={Number(params.slug)} addData={addSold} soldList={soldList} accSold={Number(max)}/>
+                    { show && <SoldInput batchId={Number(batchId)} recordId={Number(params.slug)} addData={addSold} soldList={soldList} accSold={Number(max)}/>}
                 </div>
             </div>
         )

@@ -74,11 +74,13 @@ const SoldInput = ({ addData, recordId, batchId, soldList, accSold }: Props) => 
             setDisableButton(true)
         }
     }, [weightSwitch])
-    useEffect(()=>{
-        const filtedSoldList = soldList.map(data=>data.quantity)
-        const total = filtedSoldList.reduce((acc, curr)=> acc + curr)
-        setMaxSold(accSold - total)
-    },[soldList, accSold])
+    useEffect(() => {
+        const filtedSoldList = soldList.map(data => data.quantity)
+        if (filtedSoldList.length > 0) {
+            const total = filtedSoldList.reduce((acc, curr) => acc + curr)
+            setMaxSold(accSold - total)
+        }
+    }, [soldList, accSold])
     return (
         <>
             {error &&
@@ -105,7 +107,7 @@ const SoldInput = ({ addData, recordId, batchId, soldList, accSold }: Props) => 
                 </div> :
                     <form className="w-full max-w-[600px] mx-auto  py-2 flex-wrap px-2" onSubmit={(e) => createSold(e)}>
                         <div className="flex items-center  border-b border-gray-500 py-2">
-                            <input name='amount' disabled={isPending} className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" min="1" step={'.01'} ref={weigtRef} type='number' placeholder="Weight Sold(KG)" onChange={handleWeightChange} max={maxSold}/>
+                            <input name='amount' disabled={isPending} className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" min="1" step={'.01'} ref={weigtRef} type='number' placeholder="Weight Sold(KG)" onChange={handleWeightChange} max={maxSold} />
                             <button className=" uppercase border-transparent disabled:bg-gray-300  flex-shrink-0 bg-gray-900 border-gray-500  text-sm  text-white py-1 px-2 rounded" type="submit" disabled={isPending || disableButton}>
                                 Add
                             </button>
