@@ -8,6 +8,7 @@ import { AiOutlineEdit } from "react-icons/ai"
 import { FcCancel } from "react-icons/fc"
 import { TiTickOutline as TiTick } from "react-icons/ti"
 import { AiOutlineLoading3Quarters as Spinner, AiFillCloseCircle as Close  } from "react-icons/ai"
+import {IoIosClose as Exit} from "react-icons/io"
 
 
 type Props = {
@@ -102,7 +103,10 @@ const RecordsTable = ({ batchId }: Props) => {
                                     {
                                         !activateInput ?
                                             <AiOutlineEdit className='cursor-pointer text-green-600' onClick={editButtonHandler} /> :
-                                            <button form='my-form'><TiTick className='cursor-pointer text-green-600' /></button>
+                                            <div className='flex items-center w-full justify-evenly'>
+                                                <button form='my-form'><TiTick className='cursor-pointer text-green-600 text-lg' /></button>
+                                                <button onClick={()=>setActivateInput(false)}><Exit className='cursor-pointer text-red-600 text-[24px]' /></button>
+                                            </div>    
                                     }
                                 </> :
                                     <FcCancel />}
