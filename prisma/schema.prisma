@@ -78,8 +78,20 @@ model Record {
   waterLoss  Float
   batch      Batch @relation(fields: [batchId], references: [id])
   batchId    Int
+    sold      Sold[]
 
   @@index([batchId])
+}
+
+
+model Sold {
+  id        Int      @id @default(autoincrement())
+  date      DateTime
+  quantity  Int
+  record    Record   @relation(fields: [recordId], references: [id])
+  recordId  Int
+
+  @@index([recordId])
 }
 
 model Client {
