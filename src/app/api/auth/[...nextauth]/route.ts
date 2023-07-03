@@ -41,7 +41,7 @@ export const authOptions = {
             profile?: User
         }) {
             if (account.provider === "google") {
-              return profile?.email == "abdush504@gmail.com" || profile?.email == "thomasthaddias73@gmail.com" 
+              return profile?.email == "abdush504@gmail.com" || profile?.email == "thomasthaddias73@gmail.com" ||profile?.email == "abdush1008@gmail.com"
             }
             return true // Do different verification for other providers that don't have `email_verified`
           },

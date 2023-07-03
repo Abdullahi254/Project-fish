@@ -71,25 +71,24 @@ model Batch {
 }
 
 model Record {
-  id         Int   @id @default(autoincrement())
+  id         Int    @id @default(autoincrement())
   weight     Float
   weightSold Float
   remaining  Float
   waterLoss  Float
-  batch      Batch @relation(fields: [batchId], references: [id])
+  batch      Batch  @relation(fields: [batchId], references: [id])
   batchId    Int
-    sold      Sold[]
+  sold       Sold[]
 
   @@index([batchId])
 }
 
-
 model Sold {
-  id        Int      @id @default(autoincrement())
-  date      DateTime
-  quantity  Int
-  record    Record   @relation(fields: [recordId], references: [id])
-  recordId  Int
+  id       Int      @id @default(autoincrement())
+  date     DateTime @default(now())
+  quantity Float
+  record   Record   @relation(fields: [recordId], references: [id])
+  recordId Int
 
   @@index([recordId])
 }

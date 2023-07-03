@@ -101,8 +101,38 @@ export const addCLient = async ({
         throw new Error(er.message, { cause: er })
     }
 }
+export const fetchSold = async (recordId: number) => {
+    try {
+        const soldList = await prisma.sold.findMany({
+            where: {
+                recordId: recordId
+            }
+        })
+        return soldList
+    } catch (er: any) {
+        throw new Error(er.message, { cause: er })
+    }
+}
 
-export const fetchTransactionsByDateRange = async (startDate: Date, endDate: Date, clientID:number) => {
+export const addSold = async (recorId: number, quantity: number, batchId: number) => {
+    try {
+        const sold = await prisma.sold.create({
+            data: {
+                quantity: quantity,
+                record: {
+                    connect: {
+                        id: recorId
+                    }
+                }
+            }
+        })
+        await updateRecord(recorId, quantity,batchId )
+    } catch (er:any) {
+        throw new Error(er.message, { cause: er })
+    }
+}
+
+export const fetchTransactionsByDateRange = async (startDate: Date, endDate: Date, clientID: number) => {
     try {
         const transactions = await prisma.transaction.findMany({
             where: {
@@ -132,10 +162,10 @@ export const fetchTransactions = async (id: number) => {
         throw new Error(er.message, { cause: er })
     }
 }
-export const fetchLatestFiveTransactions = async (clientID:number) => {
+export const fetchLatestFiveTransactions = async (clientID: number) => {
     try {
         const transactions = await prisma.transaction.findMany({
-            where:{
+            where: {
                 clientId: clientID
             },
             take: 5,
@@ -204,7 +234,7 @@ export const addTransaction = async (
                 }
             })
             await updateClientTransactionValues(transaction.clientId, credit, debit)
-        }else{
+        } else {
             const transaction = await prisma.transaction.create({
                 data: {
                     debit,
@@ -249,7 +279,9 @@ export const updateRecord = async (recordId: number, sold: number, batchId: numb
                 id: recordId
             },
             data: {
-                weightSold: sold,
+                weightSold: {
+                    increment: sold
+                },
                 remaining: (weight - sold)
             }
         })
