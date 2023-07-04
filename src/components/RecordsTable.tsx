@@ -68,12 +68,12 @@ const RecordsTable = ({ batchId }: Props) => {
 
                                     <AiOutlineEdit className='cursor-pointer text-green-600' onClick={() => {
                                         startTransition(() => {
-                                            router.push(`/records/${record.id}?batch=${batchId}&max=${record.remaining}&show=true`)
+                                            router.push(`/records/${record.id}?batch=${batchId}&rem=${record.remaining}&show=true`)
                                         })
                                     }} /> :
                                     <AiOutlineEdit className='cursor-pointer text-gray-400' onClick={() => {
                                         startTransition(() => {
-                                            router.push(`/records/${record.id}?batch=${batchId}&max=${record.remaining}`)
+                                            router.push(`/records/${record.id}?batch=${batchId}&rem=${record.remaining}`)
                                         })
                                     }} />
                                 }

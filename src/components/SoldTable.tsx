@@ -4,10 +4,12 @@ import React from 'react';
 
 type Props = {
     soldList: Sold[]
+    show: string | string[] | undefined
 }
 
 const SoldTable = ({
-    soldList
+    soldList,
+    show
 }: Props) => {
     return (
         <>
@@ -23,17 +25,20 @@ const SoldTable = ({
                 </thead>
                 <tbody>
                     {
-                        soldList.map((data) => <React.Fragment key={data.id}>
-                            <tr className='bg-white border-b' >
-                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                    {data.date.toDateString()}
-                                </th>
-                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                    {data.date.toLocaleTimeString()}
-                                </th>
-                                <td className="px-6 py-4">{data.quantity.toFixed(2)}</td>
-                            </tr>
-                        </React.Fragment>)
+                        (soldList.length < 1 && show) ? <tr>
+                            <th scope="col" colSpan={3} className="px-6 py-3 text-gray-500 font-semibold text-center">Add new Sold Entry</th>
+                        </tr> :
+                            soldList.map((data) => <React.Fragment key={data.id}>
+                                <tr className='bg-white border-b' >
+                                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                        {data.date.toDateString()}
+                                    </th>
+                                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                        {data.date.toLocaleTimeString()}
+                                    </th>
+                                    <td className="px-6 py-4">{data.quantity.toFixed(2)}</td>
+                                </tr>
+                            </React.Fragment>)
                     }
                 </tbody>
             </table>
