@@ -31,7 +31,7 @@ const RecordInput = ({ addData, batchId, fetchData, setLoading, getError }: Prop
         setShowForm(prev => !prev)
     }
     const handleWeightChange = () => {
-        if (weightRef.current?.value && weightRef.current?.value.length >= 0) {
+        if (weightRef.current?.value) {
             setWeightSwitch(true)
         } else {
             setWeightSwitch(false)

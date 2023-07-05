@@ -3,7 +3,7 @@ import { redirect } from "next/navigation"
 import { authOptions } from "../../api/auth/[...nextauth]/route"
 import TransactionTable from "@/components/TransactionTable"
 import TransactionInput from "@/components/TransactionInput"
-import { addTransaction, fetchLatestFiveTransactions, fetchTransactions, fetchTransactionsByDateRange } from "@/app/actions"
+import { addDebit, addCredit, fetchLatestFiveTransactions, fetchTransactions, fetchTransactionsByDateRange } from "@/app/actions"
 import { Transaction } from "@prisma/client"
 
 
@@ -52,7 +52,7 @@ const Home = async ({
             <div className="mt-12 w-full">
                 <div className="max-w-7xl mx-auto relative overflow-x-auto p-4">
                     <TransactionTable startDate={startDate} endDate={endDate} transactions={transactions} slug={params.slug} customerName={name} />
-                    <TransactionInput addData={addTransaction} id={Number(params.slug)} />
+                    <TransactionInput addCredit={addCredit} addDebit={addDebit} id={Number(params.slug)} />
                 </div>
             </div>
         )

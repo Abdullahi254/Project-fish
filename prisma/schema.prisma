@@ -110,6 +110,8 @@ model Transaction {
   debit       Float?
   credit      Float?
   debtBalance Float
+  pricePerKG  Float?
+  quantity    Float?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

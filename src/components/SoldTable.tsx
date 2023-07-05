@@ -5,15 +5,19 @@ import React from 'react';
 type Props = {
     soldList: Sold[]
     show: string | string[] | undefined
+    batchDate: string | string[] | undefined
 }
 
 const SoldTable = ({
     soldList,
-    show
+    show,
+    batchDate
 }: Props) => {
     return (
         <>
-
+            <div className='w-full flex justify-center items-center'>
+                <h3 className='text-sm font-semibold'>Batch Date: {batchDate}</h3>
+            </div>
             <table className="w-full text-sm text-left text-gray-500">
                 <thead className='text-xs text-gray-700 uppercase bg-gray-50'>
                     <tr>

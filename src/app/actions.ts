@@ -126,8 +126,8 @@ export const addSold = async (recorId: number, quantity: number, batchId: number
                 }
             }
         })
-        await updateRecord(recorId, quantity,batchId )
-    } catch (er:any) {
+        await updateRecord(recorId, quantity, batchId)
+    } catch (er: any) {
         throw new Error(er.message, { cause: er })
     }
 }
@@ -210,13 +210,7 @@ export const updateClientTransactionValues = async (id: number, credit?: number,
     }
 }
 
-export const addTransaction = async (
-    { debit, credit, id }: {
-        debit?: number
-        credit?: number
-        id: number
-    }
-) => {
+export const addDebit = async (debit: number, id: number) => {
     try {
         const latestTransaction = await fetchLatestTransaction(id)
         if (latestTransaction !== 0) {
@@ -224,8 +218,7 @@ export const addTransaction = async (
             const transaction = await prisma.transaction.create({
                 data: {
                     debit,
-                    credit,
-                    debtBalance: debit ? (balance + debit) : (credit ? (balance - credit) : balance),
+                    debtBalance: (balance + debit),
                     client: {
                         connect: {
                             id
@@ -233,13 +226,12 @@ export const addTransaction = async (
                     }
                 }
             })
-            await updateClientTransactionValues(transaction.clientId, credit, debit)
+            await updateClientTransactionValues(transaction.clientId, undefined, debit)
         } else {
             const transaction = await prisma.transaction.create({
                 data: {
                     debit,
-                    credit,
-                    debtBalance: debit ? debit : (credit ? (-1 * credit) : 0),
+                    debtBalance: debit,
                     client: {
                         connect: {
                             id
@@ -247,12 +239,55 @@ export const addTransaction = async (
                     }
                 }
             })
-            await updateClientTransactionValues(transaction.clientId, credit, debit)
+            await updateClientTransactionValues(transaction.clientId, undefined, debit)
         }
 
     } catch (er: any) {
         throw new Error(er.message, { cause: er })
     }
+}
+
+export const addCredit = async (price: number, quantity: number, id: number) => {
+    try {
+        const latestTransaction = await fetchLatestTransaction(id)
+        const credit = price * quantity
+        if (latestTransaction !== 0) {
+            const balance = latestTransaction.debtBalance
+            const transaction = await prisma.transaction.create({
+                data: {
+                    pricePerKG: price,
+                    quantity: quantity,
+                    credit: credit,
+                    debtBalance: (balance - credit),
+                    client: {
+                        connect: {
+                            id
+                        }
+                    }
+                }
+            })
+            await updateClientTransactionValues(transaction.clientId, credit, undefined)
+        } else {
+            const transaction = await prisma.transaction.create({
+                data: {
+                    pricePerKG: price,
+                    quantity: quantity,
+                    credit,
+                    debtBalance: (-1 * credit),
+                    client: {
+                        connect: {
+                            id
+                        }
+                    }
+                }
+            })
+            await updateClientTransactionValues(transaction.clientId, credit, undefined)
+        }
+
+    } catch (er: any) {
+        throw new Error(er.message, { cause: er })
+    }
+
 }
 
 

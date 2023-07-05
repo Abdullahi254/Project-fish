@@ -78,7 +78,6 @@ const SoldInput = ({ addData, recordId, batchId, soldList, remaining }: Props) =
     useEffect(() => {
         setRemaining(remaining)
     }, [remaining])
-    console.log(rem)
     return (
         <>
             {error &&

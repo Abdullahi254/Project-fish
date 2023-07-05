@@ -28,7 +28,8 @@ const BatchInput = ({ addData }: Props) => {
         setShowForm(prev => !prev)
     }
     const handleDateChange = () => {
-        if (dateRef.current?.value && dateRef.current?.value.length > 1) {
+        if (dateRef.current?.value) {
+            console.log(dateRef.current.value)
             setDateSwitch(true)
         } else {
             setDateSwitch(false)
@@ -42,7 +43,7 @@ const BatchInput = ({ addData }: Props) => {
         }
     }
     const handlePriceChange = () => {
-        if (priceRef.current?.value && priceRef.current?.value.length > 1) {
+        if (priceRef.current?.value) {
             setPriceSwitch(true)
         } else {
             setPriceSwitch(false)

@@ -104,7 +104,7 @@ const BatchTable = ({
                 <tbody>
                     {
                         batchList.map((data) => <React.Fragment key={data.id}>
-                            <tr className='bg-white border-b' >
+                            <tr className='bg-white border-b cursor-pointer' onClick={() => handlemore(data.id)}>
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                                     {data.batchDate.toDateString()}
                                 </th>
@@ -122,7 +122,7 @@ const BatchTable = ({
                                             <h2 className='text-center text-black font-semibold'>TYPE: {data.type}</h2>
                                             <h2 className='text-center text-black font-semibold mb-2'>DATE: {data.batchDate.toDateString()}</h2>
                                         </div>
-                                        <RecordsTable batchId={data.id} />
+                                        <RecordsTable batchId={data.id} batchDate={data.batchDate.toLocaleDateString()}/>
                                     </div>
                                 </td>}
 

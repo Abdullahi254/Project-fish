@@ -9,7 +9,7 @@ type Props = {
     endDate: string | string[] | undefined
     transactions: Transaction[]
     slug: string
-    customerName : string | string[] | undefined
+    customerName: string | string[] | undefined
 }
 
 const TransactionTable = ({ startDate, endDate, transactions, slug, customerName }: Props) => {
@@ -95,12 +95,12 @@ const TransactionTable = ({ startDate, endDate, transactions, slug, customerName
             })
         }
     }, [toogle, router, slug, handlelessTable, customerName])
-    useEffect(()=>{
+    useEffect(() => {
         const d1 = new Date(startDate as string)
         const d2 = new Date(endDate as string)
         setDate1(d1)
         setDate2(d2)
-    },[startDate, endDate])
+    }, [startDate, endDate])
     return (
         <>
             <div className='w-full mb-2 space-x-4 py-2 px-2 md:px-8 flex items-center justify-start md:justify-end'>
@@ -139,6 +139,8 @@ const TransactionTable = ({ startDate, endDate, transactions, slug, customerName
                 <thead className='text-xs text-gray-700 uppercase bg-gray-50'>
                     <tr>
                         <th scope="col" className="px-6 py-3">Date</th>
+                        <th scope="col" className="px-6 py-3">Weight(KG)</th>
+                        <th scope="col" className="px-6 py-3">Price/KG(KSH)</th>
                         <th scope="col" className="px-6 py-3">Debit(KSH)</th>
                         <th scope="col" className="px-6 py-3">Credit(KSH)</th>
                         <th scope="col" className="px-6 py-3">Balance(KSH)</th>
@@ -151,6 +153,8 @@ const TransactionTable = ({ startDate, endDate, transactions, slug, customerName
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                                     {data.createdAt.toDateString()}
                                 </th>
+                                <td className="px-6 py-4">{data?.quantity?.toFixed(2)}</td>
+                                <td className="px-6 py-4">{data?.pricePerKG?.toFixed(2)}</td>
                                 <td className="px-6 py-4">{data?.debit?.toFixed(2)}</td>
                                 <td className="px-6 py-4">{data?.credit?.toFixed(2)}</td>
                                 <td className="px-6 py-4">{data.debtBalance.toFixed(2)}</td>
@@ -158,12 +162,16 @@ const TransactionTable = ({ startDate, endDate, transactions, slug, customerName
                         </React.Fragment>)
                     }
                     <tr className='bg-white' >
+                        <td className="px-6 py-4 font-bold text-black"></td>
+                        <td className="px-6 py-4 font-bold text-black"></td>
                         <td className="px-6 py-4 font-bold text-black">TOTAL:</td>
                         <td className="px-6 py-4">{totalDebit.toFixed(2)}</td>
                         <td className="px-6 py-4">{totalCredit.toFixed(2)}</td>
                         <td className="px-6 py-4 font-bold text-black">{(totalDebit - totalCredit).toFixed(2)}</td>
                     </tr>
                     <tr className='bg-white'>
+                        <td className="px-6 py-4"></td>
+                        <td className="px-6 py-4"></td>
                         <td className="px-6 py-4"></td>
                         <td className="px-6 py-4"></td>
                         <td className="px-6 py-4"></td>

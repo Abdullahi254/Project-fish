@@ -12,9 +12,10 @@ import { FcCancel } from "react-icons/fc"
 
 type Props = {
     batchId: number
+    batchDate: string
 }
 
-const RecordsTable = ({ batchId }: Props) => {
+const RecordsTable = ({ batchId, batchDate }: Props) => {
     const [records, setRecords] = useState<AsyncReturnType<typeof fetchRecords>>([])
     const [loading, setLoading] = useState<boolean>(false)
     const [isPending, startTransition] = useTransition()
@@ -68,12 +69,12 @@ const RecordsTable = ({ batchId }: Props) => {
 
                                     <AiOutlineEdit className='cursor-pointer text-green-600' onClick={() => {
                                         startTransition(() => {
-                                            router.push(`/records/${record.id}?batch=${batchId}&rem=${record.remaining}&show=true`)
+                                            router.push(`/records/${record.id}?batch=${batchId}&batchDate=${batchDate}&rem=${record.remaining}&show=true`)
                                         })
                                     }} /> :
                                     <AiOutlineEdit className='cursor-pointer text-gray-400' onClick={() => {
                                         startTransition(() => {
-                                            router.push(`/records/${record.id}?batch=${batchId}&rem=${record.remaining}`)
+                                            router.push(`/records/${record.id}?batch=${batchId}&batchDate=${batchDate}&rem=${record.remaining}`)
                                         })
                                     }} />
                                 }

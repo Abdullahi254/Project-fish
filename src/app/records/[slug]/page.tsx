@@ -15,6 +15,7 @@ const Home = async ({
     params: { slug: string }
 }) => {
     const batchId = searchParams["batch"]
+    const batchDate = searchParams["batchDate"]
     const remaining = searchParams["rem"]
     const show = searchParams["show"]
     const session = await getServerSession(authOptions)
@@ -26,7 +27,7 @@ const Home = async ({
         return (
             <div className="mt-12 w-full">
                 <div className="max-w-7xl mx-auto relative overflow-x-auto p-4">
-                    <SoldTable soldList={soldList} show={show}/>
+                    <SoldTable soldList={soldList} show={show} batchDate={batchDate}/>
                     { show && <SoldInput batchId={Number(batchId)} recordId={Number(params.slug)} addData={addSold} soldList={soldList} remaining={Number(remaining)}/>}
                 </div>
             </div>
