@@ -13,7 +13,7 @@ type Props = {
 const ClientList = ({ clients }: Props) => {
     return (
         <>
-            <div className=' px-4 md:px-6 py-4 flex flex-col space-y-2'>
+            <div className='py-4 flex flex-col space-y-2'>
                 {clients.map(data => <ProfileCard
                     id ={data.id}
                     key={data.id}

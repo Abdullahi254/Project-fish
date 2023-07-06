@@ -39,7 +39,7 @@ const Home = async ({
         return (
             <div className="mt-12 w-full">
                 <div className="max-w-7xl mx-auto relative overflow-x-auto px-4 py-6">
-                    <div className="px-6">
+                    <div>
                         <SearchForm />
                     </div>
                     <ClientList clients={clients} />

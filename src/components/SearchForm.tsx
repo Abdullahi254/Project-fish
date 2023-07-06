@@ -56,12 +56,12 @@ const SearchForm = (props: Props) => {
     return (
         <>
             <form className="flex items-center" onSubmit={(e)=>e.preventDefault()}>
-                <label htmlFor="simple-search" className="sr-only">Search</label>
+                <label htmlFor="simple-search text-xs md:text-sm" className="sr-only">Search</label>
                 <div className="relative w-full">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                         <SearchIcon className='text-lg md:text-xl text-gray-500' />
                     </div>
-                    <input value={inputValue} onChange={(e) => setInputValue(e.target.value)} type="text" id="simple-search" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full pl-10 p-2.5" placeholder="Search" required />
+                    <input value={inputValue} onChange={(e) => setInputValue(e.target.value)} type="text" id="simple-search" className="bg-gray-50 border border-gray-300 text-gray-900 text-xs md:text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full pl-10 p-2.5" placeholder="Search" required />
                 </div>
             </form>
             { isPending &&

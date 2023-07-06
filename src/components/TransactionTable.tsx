@@ -104,13 +104,13 @@ const TransactionTable = ({ startDate, endDate, transactions, slug, customerName
     return (
         <>
             <div className='w-full mb-2 space-x-4 py-2 px-2 md:px-8 flex items-center justify-start md:justify-end'>
-                <span className='text-sm text-gray-500'>From:</span>
-                <input type='date' ref={firstDateRef} className='text-sm text-gray-600' onChange={handleDateChange} />
-                <span className='text-sm text-gray-500'>To:</span>
-                <input type='date' ref={secondDateRef} className='text-sm text-gray-600' onChange={handleDateChange} />
+                <span className='text-xs md:text-sm text-gray-500'>From:</span>
+                <input type='date' ref={firstDateRef} className='text-xs md:text-sm text-gray-600' onChange={handleDateChange} />
+                <span className='text-xs md:text-sm text-gray-500'>To:</span>
+                <input type='date' ref={secondDateRef} className='text-xs md:text-sm text-gray-600' onChange={handleDateChange} />
             </div>
             <div className='w-full mb-2 space-x-4 py-2 px-2 md:px-8 flex items-center justify-start md:justify-end'>
-                <h3 className='text-sm font-bold uppercase'>{customerName}</h3>
+                <h3 className='text-xs md:text-sm font-bold uppercase'>{customerName}</h3>
             </div>
             {isPending2 &&
                 <div className='w-full flex justify-center py-2'>
@@ -121,22 +121,22 @@ const TransactionTable = ({ startDate, endDate, transactions, slug, customerName
             {
                 (!startDate && !endDate) &&
                 <div className='w-full flex justify-center py-2'>
-                    {!isFull ? <h3 className='text-sm font-bold underline uppercase'>Latest Transactions</h3> :
-                        <h3 className='text-sm font-bold underline uppercase'>Full Table</h3>}
+                    {!isFull ? <h3 className='text-xs md:text-sm font-bold underline uppercase'>Latest Transactions</h3> :
+                        <h3 className='text-xs md:text-sm font-bold underline uppercase'>Full Table</h3>}
                 </div>
             }
 
             {(startDate && endDate) &&
                 <div className='w-full mb-2 flex justify-start px-2 md:justify-center items-center py-2 space-x-4 '>
-                    <p className='text-sm text-gray-600'>Date Selected:</p>
-                    <p className='text-sm font-semibold'>{date1?.toDateString()}</p>
-                    <p className='text-sm text-gray-600'>to</p>
-                    <p className='text-sm font-semibold'>{date2?.toDateString()}</p>
+                    <p className='text-xs md:text-sm text-gray-600'>Date Selected:</p>
+                    <p className='text-xs md:text-sm font-semibold'>{date1?.toDateString()}</p>
+                    <p className='text-xs md:text-sm text-gray-600'>to</p>
+                    <p className='text-xs md:text-sm font-semibold'>{date2?.toDateString()}</p>
                     <button onClick={clearDateFields}><RxReset className='text-green-500' /></button>
                 </div>
             }
             <table className="w-full text-sm text-left text-gray-500">
-                <thead className='text-xs text-gray-700 uppercase bg-gray-50'>
+                <thead className='text-[9px] md:text-xs text-gray-700 uppercase bg-gray-50'>
                     <tr>
                         <th scope="col" className="px-6 py-3">Date</th>
                         <th scope="col" className="px-6 py-3">Weight(KG)</th>
@@ -146,7 +146,7 @@ const TransactionTable = ({ startDate, endDate, transactions, slug, customerName
                         <th scope="col" className="px-6 py-3">Balance(KSH)</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className='text-xs md:text-sm'>
                     {
                         transactions.map((data) => <React.Fragment key={data.id}>
                             <tr className='bg-white border-b' >
@@ -177,8 +177,8 @@ const TransactionTable = ({ startDate, endDate, transactions, slug, customerName
                         <td className="px-6 py-4"></td>
                         {
                             isFull ?
-                                <td className="px-6 py-4"><button className='text-blue-600 hover:text-indigo-900 text-sm' onClick={handlelessTable}>Show less</button></td> :
-                                <td className="px-6 py-4"><button className='text-blue-600 hover:text-indigo-900 text-sm' onClick={handleFullTable}>Full table</button></td>
+                                <td className="px-6 py-4"><button className='text-blue-600 hover:text-indigo-900 text-xs md:text-sm' onClick={handlelessTable}>Show less</button></td> :
+                                <td className="px-6 py-4"><button className='text-blue-600 hover:text-indigo-900 text-xs md:text-sm' onClick={handleFullTable}>Full table</button></td>
                         }
                     </tr>
                 </tbody>

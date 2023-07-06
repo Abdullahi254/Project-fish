@@ -46,11 +46,13 @@ const BatchTable = ({
     }
 
     const clearDateFields = () => {
-        if (firstDateRef.current?.value && secondDateRef.current?.value) {
-            firstDateRef.current.value = ''
-            secondDateRef.current.value = ''
-        }
-        router.push("/")
+        startTransition(() => {
+            if (firstDateRef.current?.value && secondDateRef.current?.value) {
+                firstDateRef.current.value = ''
+                secondDateRef.current.value = ''
+            }
+            router.push("/")
+        })
     }
 
     useEffect(() => {
@@ -71,10 +73,10 @@ const BatchTable = ({
     return (
         <>
             <div className='w-full mb-2 space-x-4 py-2 px-2 md:px-8 flex items-center justify-start md:justify-end'>
-                <span className='text-sm text-gray-500'>From:</span>
-                <input type='date' ref={firstDateRef} className='text-sm text-gray-600' onChange={handleDateChange} />
-                <span className='text-sm text-gray-500'>To:</span>
-                <input type='date' ref={secondDateRef} className='text-sm text-gray-600' onChange={handleDateChange} />
+                <span className='text-xs md:text-sm text-gray-500'>From:</span>
+                <input type='date' ref={firstDateRef} className='text-xs md:text-sm text-gray-600' onChange={handleDateChange} />
+                <span className='text-xs md:text-sm text-gray-500'>To:</span>
+                <input type='date' ref={secondDateRef} className='text-xs md:text-sm text-gray-600' onChange={handleDateChange} />
             </div>
             {isPending &&
                 <div className='w-full flex justify-center py-2'>
@@ -83,10 +85,10 @@ const BatchTable = ({
             }
             {(startDate && endDate) &&
                 <div className='w-full mb-2 flex justify-start px-2 md:justify-center items-center py-2 space-x-4 '>
-                    <p className='text-sm text-gray-600'>Date Selected:</p>
-                    <p className='text-sm font-semibold'>{date1?.toDateString()}</p>
-                    <p className='text-sm text-gray-600'>to</p>
-                    <p className='text-sm font-semibold'>{date2?.toDateString()}</p>
+                    <p className='text-xs md:text-sm text-gray-600'>Date Selected:</p>
+                    <p className='text-xs md:text-sm font-semibold'>{date1?.toDateString()}</p>
+                    <p className='text-xs md:text-sm text-gray-600'>to</p>
+                    <p className='text-xs md:text-sm font-semibold'>{date2?.toDateString()}</p>
                     <button onClick={clearDateFields}><RxReset className='text-green-500' /></button>
                 </div>
             }

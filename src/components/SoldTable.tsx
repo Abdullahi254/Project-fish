@@ -16,10 +16,10 @@ const SoldTable = ({
     return (
         <>
             <div className='w-full flex justify-center items-center'>
-                <h3 className='text-sm font-semibold'>Batch Date: {batchDate}</h3>
+                <h3 className='text-xs md:text-sm font-semibold'>Batch Date: {batchDate}</h3>
             </div>
             <table className="w-full text-sm text-left text-gray-500">
-                <thead className='text-xs text-gray-700 uppercase bg-gray-50'>
+                <thead className='text-[9px] md:text-xs text-gray-700 uppercase bg-gray-50'>
                     <tr>
                         <th scope="col" className="px-6 py-3">Date</th>
                         <th scope="col" className="px-6 py-3">Time</th>
@@ -27,7 +27,7 @@ const SoldTable = ({
 
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className='text-xs md:text-sm'>
                     {
                         (soldList.length < 1 && show) ? <tr>
                             <th scope="col" colSpan={3} className="px-6 py-3 text-gray-500 font-semibold text-center">Add new Sold Entry</th>

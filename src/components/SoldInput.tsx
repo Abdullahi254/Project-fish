@@ -104,11 +104,11 @@ const SoldInput = ({ addData, recordId, batchId, soldList, remaining }: Props) =
                 </div> :
                     <form className="w-full max-w-[600px] mx-auto  py-2 flex-wrap px-2" onSubmit={(e) => createSold(e)}>
                         <div className="flex items-center  border-b border-gray-500 py-2">
-                            <input name='amount' disabled={isPending} className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" min="1" step={'.01'} ref={weigtRef} type='number' placeholder="Weight Sold(KG)" onChange={handleWeightChange} max={rem} />
-                            <button className=" uppercase border-transparent disabled:bg-gray-300  flex-shrink-0 bg-gray-900 border-gray-500  text-sm  text-white py-1 px-2 rounded" type="submit" disabled={isPending || disableButton}>
+                            <input name='amount' disabled={isPending} className="text-xs md:text-sm appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" min="1" step={'.01'} ref={weigtRef} type='number' placeholder="Weight Sold(KG)" onChange={handleWeightChange} max={rem} />
+                            <button className=" uppercase border-transparent disabled:bg-gray-300  flex-shrink-0 bg-gray-900 border-gray-500 text-xs md:text-sm text-white py-1 px-2 rounded" type="submit" disabled={isPending || disableButton}>
                                 Add
                             </button>
-                            <button className="flex-shrink-0 border-transparent border-2 text-red-400 hover:text-red-700 text-sm py-1 px-2 rounded" type="button" onClick={handleAddButton}>
+                            <button className="flex-shrink-0 border-transparent border-2 text-red-400 hover:text-red-700 text-xs md:text-sm py-1 px-2 rounded" type="button" onClick={handleAddButton}>
                                 Cancel
                             </button>
                         </div>

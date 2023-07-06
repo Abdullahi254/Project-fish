@@ -100,8 +100,8 @@ const CustomerInput = ({ addData }: Props) => {
             {error &&
                 <div className='bg-white w-full py-2'>
                     <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative flex justify-center items-center" role="alert">
-                        <strong className="font-bold mr-1 text-sm">Error! </strong>
-                        <span className="block sm:inline text-sm">{error}</span>
+                        <strong className="font-bold mr-1 text-xs md:text-sm">Error! </strong>
+                        <span className="block sm:inline text-xs md:text-sm">{error}</span>
                         <span className="absolute top-0 bottom-0 right-0 px-4 py-3 cursor-pointer text-lg font-bold" onClick={() => setError('')}>
                             <Close />
                         </span>
@@ -121,13 +121,13 @@ const CustomerInput = ({ addData }: Props) => {
                 </div> :
                     <form className="w-full max-w-[600px] mx-auto  py-2 flex-wrap" onSubmit={(e) => createClient(e)}>
                         <div className="flex items-center  border-b border-gray-500 py-2">
-                            <input name='name' disabled={loading} className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" ref={nameRef} placeholder="First" onChange={handleNameChange} />
-                            <input name='name2' disabled={loading} className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" ref={name2Ref} placeholder="Last" onChange={handleName2Change} />
-                            <input name='phone' disabled={loading} className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" min="1" ref={phoneRef} type='number' placeholder="Phone" onChange={handlePhoneChange} />
-                            <button className=" uppercase border-transparent disabled:bg-gray-300  flex-shrink-0 bg-gray-900 border-gray-500  text-sm  text-white py-1 px-2 rounded" type="submit" disabled={loading || disableButton}>
+                            <input name='name' disabled={loading} className="text-xs md:text-sm appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" ref={nameRef} placeholder="First" onChange={handleNameChange} />
+                            <input name='name2' disabled={loading} className="text-xs md:text-sm appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" ref={name2Ref} placeholder="Last" onChange={handleName2Change} />
+                            <input name='phone' disabled={loading} className="text-xs md:text-sm appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" min="1" ref={phoneRef} type='number' placeholder="Phone" onChange={handlePhoneChange} />
+                            <button className=" uppercase border-transparent disabled:bg-gray-300  flex-shrink-0 bg-gray-900 border-gray-500 text-xs md:text-sm text-white py-1 px-2 rounded" type="submit" disabled={loading || disableButton}>
                                 Add
                             </button>
-                            <button className="flex-shrink-0 border-transparent border-2 text-red-400 hover:text-red-700 text-sm py-1 px-2 rounded" type="button" onClick={handleAddButton}>
+                            <button className="flex-shrink-0 border-transparent border-2 text-red-400 hover:text-red-700 text-xs md:text-sm py-1 px-2 rounded" type="button" onClick={handleAddButton}>
                                 Cancel
                             </button>
                         </div>
