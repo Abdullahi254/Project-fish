@@ -42,11 +42,6 @@ const BatchInput = ({ addData }: Props) => {
     }
     const handleAddButton = () => {
         setShowForm(prev => !prev)
-        if (dateRef.current?.value && fishTypetRef.current?.value && priceRef.current?.value) {
-            dateRef.current.value = ''
-            fishTypetRef.current.value = ''
-            priceRef.current.value = ''
-        }
     }
     const handleDateChange = () => {
         if (dateRef.current?.value) {
@@ -87,11 +82,7 @@ const BatchInput = ({ addData }: Props) => {
                 })
                 setLoading(false)
                 setShowForm(prev => !prev)
-                if (dateRef.current?.value && fishTypetRef.current?.value && priceRef.current?.value) {
-                    dateRef.current.value = ''
-                    fishTypetRef.current.value = ''
-                    priceRef.current.value = ''
-                }
+                handleCancel()
                 router.refresh()
             }
             else {
@@ -101,11 +92,7 @@ const BatchInput = ({ addData }: Props) => {
             setError(er.message)
             setLoading(false)
             setShowForm(prev => !prev)
-            if (dateRef.current?.value && fishTypetRef.current?.value && priceRef.current?.value) {
-                dateRef.current.value = ''
-                fishTypetRef.current.value = ''
-                priceRef.current.value = ''
-            }
+            handleCancel()
             router.refresh()
         }
     }
