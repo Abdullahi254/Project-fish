@@ -31,6 +31,15 @@ const SoldInput = ({ addData, recordId, batchId, soldList, remaining }: Props) =
 
     const router = useRouter()
 
+    const handleCancel = () => {
+        setShowForm(false)
+        if (weigtRef.current?.value) {
+            weigtRef.current.value = ''
+        }
+        setDisableButton(true)
+        setWeightSwitch(false)
+    }
+
     const handleAddButton = () => {
         setShowForm(prev => !prev)
     }
@@ -51,9 +60,9 @@ const SoldInput = ({ addData, recordId, batchId, soldList, remaining }: Props) =
                     addData(recordId, Number(weigt), batchId)
                     router.refresh()
                     setShowForm(prev => !prev)
-
                     weigtRef.current.value = ''
                     setRemaining(prev => (prev - Number(weigt)))
+                    handleCancel()
                 }
                 else {
                     throw new Error("Error adding new Client")
@@ -62,9 +71,7 @@ const SoldInput = ({ addData, recordId, batchId, soldList, remaining }: Props) =
         } catch (er: any) {
             setError(er.message)
             setShowForm(prev => !prev)
-            if (weigtRef.current?.value) {
-                weigtRef.current.value = ''
-            }
+            handleCancel()
         }
     }
     useEffect(() => {
@@ -108,7 +115,7 @@ const SoldInput = ({ addData, recordId, batchId, soldList, remaining }: Props) =
                             <button className=" uppercase border-transparent disabled:bg-gray-300  flex-shrink-0 bg-gray-900 border-gray-500 text-xs md:text-sm text-white py-1 px-2 rounded" type="submit" disabled={isPending || disableButton}>
                                 Add
                             </button>
-                            <button className="flex-shrink-0 border-transparent border-2 text-red-400 hover:text-red-700 text-xs md:text-sm py-1 px-2 rounded" type="button" onClick={handleAddButton}>
+                            <button className="flex-shrink-0 border-transparent border-2 text-red-400 hover:text-red-700 text-xs md:text-sm py-1 px-2 rounded" type="button" disabled={isPending} onClick={handleCancel}>
                                 Cancel
                             </button>
                         </div>
