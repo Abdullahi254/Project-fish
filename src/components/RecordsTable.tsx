@@ -44,17 +44,17 @@ const RecordsTable = ({ batchId, batchDate }: Props) => {
     return (
         <>
             <table className="w-full text-sm text-left text-gray-500 mb-2 border-x-2">
-                <thead className='text-xs text-gray-700 uppercase bg-gray-50'>
+                <thead className='text-[9px] md:text-xs text-gray-700 uppercase bg-gray-50'>
                     <tr>
                         <th scope="col" className="px-4 py-3">NO</th>
                         <th scope="col" className="px-4 py-3">Weight(kg)</th>
-                        <th scope="col" className="px-4 py-3">Sold(kg)</th>
-                        <th scope="col" className="px-4 py-3">Remaining(kg)</th>
+                        <th scope="col" className="px-4 py-3 ">Sold(kg)</th>
+                        <th scope="col" className="px-4 py-3 hidden md:block">Remaining(kg)</th>
                         <th scope="col" className="px-4 py-3">Water Loss(kg)</th>
                         <th scope="col" className="px-4 py-3">Action</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className='text-xs md:text-sm'>
                     {
                         records.map((record, index) => <tr className='bg-white border-b' key={record.id}>
                             <th scope="row" className="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">
@@ -62,7 +62,7 @@ const RecordsTable = ({ batchId, batchDate }: Props) => {
                             </th>
                             <td className="px-4 py-4">{record.weight.toFixed(2)}</td>
                             <td className="px-4 py-4">{record.weightSold.toFixed(2)}</td>
-                            <td className="px-4 py-4">{record.remaining.toFixed(2)}</td>
+                            <td className="px-4 py-4 hidden md:block">{record.remaining.toFixed(2)}</td>
                             <td className="px-4 py-4">{record.waterLoss.toFixed(2)}</td>
                             <td className="px-4 py-4">
                                 {(records.length - 1) === index ?

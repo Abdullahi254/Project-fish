@@ -131,15 +131,15 @@ const BatchInput = ({ addData }: Props) => {
                     <form className="w-full max-w-[600px] mx-auto  py-4 flex-wrap mt-2" onSubmit={(e) => createBatch(e)}>
                         <div className="flex flex-col space-y-2 px-2 md:px-0 md:flex-row md:items-center  border-b border-gray-500 py-2">
                             <div className='flex items-center border-b-2 md:border-none'>
-                                <label className='md:hidden px-2 text-gray-400'>Date:</label>
-                                <input name='date' disabled={loading} className="appearance-none bg-transparent w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" ref={dateRef} type="date" onChange={handleDateChange} />
+                                <label className='text-xs md:hidden px-2 text-gray-400'>Date:</label>
+                                <input name='date' disabled={loading} className="text-xs md:text-sm appearance-none bg-transparent w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" ref={dateRef} type="date" onChange={handleDateChange} />
                             </div>
-                            <input name='type' disabled={loading} className="appearance-none bg-transparent border-b-2 md:border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" ref={fishTypetRef} placeholder="Fish Type" onChange={handleTypeChange} />
-                            <input name='price' disabled={loading} className="appearance-none bg-transparent border-b-2 md:border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" min="1" ref={priceRef} type='number' placeholder="Price/Kilo(KSH)" onChange={handlePriceChange} step={0.01} />
-                            <button className="uppercase border-transparent disabled:bg-gray-300  flex-shrink-0 bg-gray-900 border-gray-500  text-sm  text-white py-1 px-2 rounded" type="submit" disabled={loading || disableButton}>
+                            <input name='type' disabled={loading} className=" text-xs md:text-sm appearance-none bg-transparent border-b-2 md:border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" ref={fishTypetRef} placeholder="Fish Type" onChange={handleTypeChange} />
+                            <input name='price' disabled={loading} className=" text-xs md:text-sm appearance-none bg-transparent border-b-2 md:border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" min="1" ref={priceRef} type='number' placeholder="Price/Kilo(KSH)" onChange={handlePriceChange} step={0.01} />
+                            <button className="uppercase border-transparent disabled:bg-gray-300  flex-shrink-0 bg-gray-900 border-gray-500  text-xs md:text-sm  text-white py-1 px-2 rounded" type="submit" disabled={loading || disableButton}>
                                 Add
                             </button>
-                            <button className="flex-shrink-0 border-transparent border-2 text-red-400 hover:text-red-700 text-sm py-1 px-2 rounded" type="button" onClick={handleCancel}>
+                            <button className="flex-shrink-0 border-transparent border-2 text-red-400 hover:text-red-700 text-xs md:text-sm py-1 px-2 rounded" type="button" onClick={handleCancel}>
                                 Cancel
                             </button>
                         </div>

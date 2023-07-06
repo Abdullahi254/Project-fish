@@ -62,12 +62,12 @@ const BatchTable = ({
             })
         }
     }, [toogle, router])
-    useEffect(()=>{
+    useEffect(() => {
         const d1 = new Date(startDate as string)
         const d2 = new Date(endDate as string)
         setDate1(d1)
         setDate2(d2)
-    },[startDate, endDate])
+    }, [startDate, endDate])
     return (
         <>
             <div className='w-full mb-2 space-x-4 py-2 px-2 md:px-8 flex items-center justify-start md:justify-end'>
@@ -76,9 +76,9 @@ const BatchTable = ({
                 <span className='text-sm text-gray-500'>To:</span>
                 <input type='date' ref={secondDateRef} className='text-sm text-gray-600' onChange={handleDateChange} />
             </div>
-            { isPending &&
+            {isPending &&
                 <div className='w-full flex justify-center py-2'>
-                    <Spinner className='animate-spin'/>
+                    <Spinner className='animate-spin' />
                 </div>
             }
             {(startDate && endDate) &&
@@ -91,38 +91,36 @@ const BatchTable = ({
                 </div>
             }
             <table className="w-full text-sm text-left text-gray-500">
-                <thead className='text-xs text-gray-700 uppercase bg-gray-50'>
+                <thead className='text-[9px] md:text-xs text-gray-700 uppercase bg-gray-50'>
                     <tr>
                         <th scope="col" className="px-6 py-3">Batch Date</th>
                         <th scope="col" className="px-6 py-3">Fish Type</th>
-                        <th scope="col" className="px-6 py-3">Price/Kilo(KSH)</th>
+                        <th scope="col" className="px-6 py-3 hidden md:block">Price/Kilo(KSH)</th>
                         <th scope="col" className="px-6 py-3">Total Water Loss(KG)</th>
-                        <th scope="col" className="px-6 py-3">Estimated Loss(KSH)</th>
-                        <th scope="col" className="px-6 py-3"></th>
+                        <th scope="col" className="px-6 py-3 hidden md:block">Estimated Loss(KSH)</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className='text-xs md:text-sm'>
                     {
                         batchList.map((data) => <React.Fragment key={data.id}>
-                            <tr className='bg-white border-b cursor-pointer' onClick={() => handlemore(data.id)}>
+                            <tr className='bg-white hover:bg-gray-50 border-b cursor-pointer' onClick={() => handlemore(data.id)}>
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                                     {data.batchDate.toDateString()}
                                 </th>
                                 <td className="px-6 py-4">{data.type}</td>
-                                <td className="px-6 py-4">{data.pricePerKilo.toFixed(2)}</td>
-                                <td className="px-6 py-4">{data.totalWaterLoss?.toFixed(2)}</td>
-                                <td className="px-6 py-4">{data.estimatedLoss?.toFixed(2)}</td>
-                                <td className="py-4"><RiArrowDropDownLine className={activeIds.includes(data.id) ? `cursor-pointer text-black text-lg` : `cursor-pointer text-black rotate-180 text-lg`} onClick={() => handlemore(data.id)} /></td>
+                                <td className="px-6 py-4 hidden md:block">{data.pricePerKilo.toFixed(2)}</td>
+                                <td className="px-6 py-4 ">{data.totalWaterLoss?.toFixed(2)}</td>
+                                <td className="px-6 py-4 hidden md:block">{data.estimatedLoss?.toFixed(2)}</td>
                             </tr>
                             <tr>
                                 {(activeIds.includes(data.id)) && <td colSpan={6}>
                                     <div className='max-w-6xl mx-auto pt-4 pb-2 bg-gray-200 my-2'>
-                                        <div className='w-full flex justify-evenly'>
-                                            <h2 className='text-center text-black font-semibold'>ID: {data.id}</h2>
-                                            <h2 className='text-center text-black font-semibold'>TYPE: {data.type}</h2>
-                                            <h2 className='text-center text-black font-semibold mb-2'>DATE: {data.batchDate.toDateString()}</h2>
+                                        <div className='w-full flex justify-evenly items-center text-[9px] md:text-xs mb-2'>
+                                            <h2 className='text-center text-gray-700 font-semibold'>BATCH-DATE: <b className='ml-1'>{data.batchDate.toDateString()}</b></h2>
+                                            <h2 className='text-center text-gray-700 font-semibold'>TYPE: {data.type}</h2>
+                                            <RiArrowDropDownLine className={activeIds.includes(data.id) ? `cursor-pointer rotate-180 text-red-500 text-xl` : `cursor-pointer text-black text-xl`} onClick={() => handlemore(data.id)} />
                                         </div>
-                                        <RecordsTable batchId={data.id} batchDate={data.batchDate.toLocaleDateString()}/>
+                                        <RecordsTable batchId={data.id} batchDate={data.batchDate.toLocaleDateString()} />
                                     </div>
                                 </td>}
 
