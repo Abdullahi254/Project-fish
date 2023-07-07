@@ -45,7 +45,6 @@ const RecordsTable = ({ batchId, batchDate }: Props) => {
     useEffect(() => {
         const latestRecord = records[records.length - 1]
         const rem = latestRecord?.remaining
-        console.log(rem)
         setRemaining(rem)
     }, [records])
     return (

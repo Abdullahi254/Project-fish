@@ -12,12 +12,14 @@ type Props = {
     batchList: AsyncReturnType<typeof fetchBatchData>
     startDate: string | string[] | undefined
     endDate: string | string[] | undefined
+    deleteData: (batchId: number) => Promise<void>
 }
 
 const BatchTable = ({
     batchList,
     startDate,
-    endDate
+    endDate,
+    deleteData
 }: Props) => {
     const [activeIds, setActiveIds] = useState<number[]>([])
     const [toogle, setToogle] = useState<boolean>()
@@ -52,6 +54,16 @@ const BatchTable = ({
                 secondDateRef.current.value = ''
             }
             router.push("/")
+        })
+    }
+
+    const deleteBatch = (batchID: number) => {
+        const isOk = confirm("Are you sure you want to delete!\nAll the batch and record data will be deleted.")
+        startTransition(async () => {
+            if (isOk) {
+                await deleteData(batchID)
+                router.refresh()
+            }
         })
     }
 
@@ -120,6 +132,9 @@ const BatchTable = ({
                                         <div className='w-full flex justify-evenly items-center text-[9px] md:text-xs mb-2'>
                                             <h2 className='text-center text-gray-700 font-semibold'>BATCH-DATE: <b className='ml-1'>{data.batchDate.toDateString()}</b></h2>
                                             <h2 className='text-center text-gray-700 font-semibold'>TYPE: {data.type}</h2>
+                                            <button className="text-red-400 font-semibold hover:text-red-700 disabled:text-gray-100" type="button" disabled={isPending} onClick={() => deleteBatch(data.id)}>
+                                                Delete
+                                            </button>
                                             <RiArrowDropDownLine className={activeIds.includes(data.id) ? `cursor-pointer rotate-180 text-red-500 text-xl` : `cursor-pointer text-black text-xl`} onClick={() => handlemore(data.id)} />
                                         </div>
                                         <RecordsTable batchId={data.id} batchDate={data.batchDate.toLocaleDateString()} />

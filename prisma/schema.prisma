@@ -76,7 +76,7 @@ model Record {
   weightSold Float
   remaining  Float
   waterLoss  Float
-  batch      Batch  @relation(fields: [batchId], references: [id])
+  batch      Batch  @relation(fields: [batchId], references: [id], onDelete: Cascade)
   batchId    Int
   sold       Sold[]
 
@@ -87,7 +87,7 @@ model Sold {
   id       Int      @id @default(autoincrement())
   date     DateTime @default(now())
   quantity Float
-  record   Record   @relation(fields: [recordId], references: [id])
+  record   Record   @relation(fields: [recordId], references: [id], onDelete: Cascade)
   recordId Int
 
   @@index([recordId])

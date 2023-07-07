@@ -435,3 +435,16 @@ export const fetchBatchesByDateRange = async (startDate: Date, endDate: Date) =>
         throw new Error(er.message, { cause: er })
     }
 };
+
+export const deleteData = async (batchId: number) => {
+    try {
+        const deleteBatch = await prisma.batch.delete({
+            where:{
+                id:batchId
+            }
+        })
+        
+    } catch (er: any) {
+        throw new Error(er.message, { cause: er })
+    }
+}
