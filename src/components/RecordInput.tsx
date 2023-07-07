@@ -16,9 +16,10 @@ type Props = {
     fetchData: () => Promise<void>,
     setLoading: (state: boolean) => void,
     getError: (error: string) => void
+    max: number | undefined
 }
 
-const RecordInput = ({ addData, batchId, fetchData, setLoading, getError }: Props) => {
+const RecordInput = ({ addData, batchId, fetchData, setLoading, getError, max }: Props) => {
     const [showForm, setShowForm] = useState<boolean>(false)
     const [weightSwitch, setWeightSwitch] = useState<boolean>(false)
     const [disableButton, setDisableButton] = useState<boolean>(true)
@@ -79,8 +80,8 @@ const RecordInput = ({ addData, batchId, fetchData, setLoading, getError }: Prop
                 </div> :
                     <form className="w-full max-w-[600px] mx-auto px-6  py-2 flex-wrap" onSubmit={(e) => createRecord(e)}>
                         <div className="flex items-center  border-b border-gray-500 py-2">
-                            <input name='weight' className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" ref={weightRef} type='number' min="1" step={0.01} placeholder="New Weight(Kg)" onChange={handleWeightChange} />
-                            <button className=" uppercase border-transparent disabled:bg-gray-300  flex-shrink-0 bg-gray-900 border-gray-500 text-xs md:text-sm  text-white py-1 px-2 rounded" type="submit" disabled={disableButton}>
+                            <input name='weight' className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" ref={weightRef} type='number' min="1" max={max} step={0.01} placeholder="New Weight(Kg)" onChange={handleWeightChange} />
+                            <button className=" uppercase border-transparent disabled:bg-gray-300  flex-shrink-0 bg-gray-900 border-gray-500 text-xs md:text-sm  text-white py-1 px-2 rounded" type="submit" disabled={disableButton || (max as number < 1)}>
                                 Add
                             </button>
                             <button className="flex-shrink-0 border-transparent border-2 text-red-400 hover:text-red-700 text-xs md:text-sm py-1 px-2 rounded" type="button" onClick={handleAddButton}>

@@ -17,7 +17,7 @@ const SoldTable = ({
 
     useEffect(()=>{
         const quantityList = soldList.map(data=>data.quantity)
-        const sum = quantityList.reduce((acc,curr)=>acc+curr)
+        const sum = quantityList.reduce((acc,curr)=>acc+curr,0)
         setTotal(sum) 
     },[soldList])
     return (

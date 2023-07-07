@@ -45,7 +45,6 @@ const BatchInput = ({ addData }: Props) => {
     }
     const handleDateChange = () => {
         if (dateRef.current?.value) {
-            console.log(dateRef.current.value)
             setDateSwitch(true)
         } else {
             setDateSwitch(false)
@@ -53,7 +52,6 @@ const BatchInput = ({ addData }: Props) => {
     }
     const handleTypeChange = () => {
         if (fishTypetRef.current?.value && fishTypetRef.current?.value.length > 1) {
-            console.log(fishTypetRef.current.value)
             setTypeSwitch(true)
         } else {
             setTypeSwitch(false)
@@ -61,7 +59,6 @@ const BatchInput = ({ addData }: Props) => {
     }
     const handlePriceChange = () => {
         if (priceRef.current?.value) {
-            console.log(priceRef.current.value)
             setPriceSwitch(true)
         } else {
             setPriceSwitch(false)

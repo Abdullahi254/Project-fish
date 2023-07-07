@@ -18,6 +18,7 @@ type Props = {
 const RecordsTable = ({ batchId, batchDate }: Props) => {
     const [records, setRecords] = useState<AsyncReturnType<typeof fetchRecords>>([])
     const [loading, setLoading] = useState<boolean>(false)
+    const [remaining, setRemaining] = useState<number>(0)
     const [isPending, startTransition] = useTransition()
     const [error, setError] = useState<string>('')
 
@@ -41,6 +42,12 @@ const RecordsTable = ({ batchId, batchDate }: Props) => {
             setRecords([])
         }
     }, [fetchData])
+    useEffect(() => {
+        const latestRecord = records[records.length - 1]
+        const rem = latestRecord?.remaining
+        console.log(rem)
+        setRemaining(rem)
+    }, [records])
     return (
         <>
             <table className="w-full text-sm text-left text-gray-500 mb-2 border-x-2">
@@ -102,6 +109,7 @@ const RecordsTable = ({ batchId, batchDate }: Props) => {
                 </div>
             }
             <RecordInput
+                max={remaining}
                 addData={addRecordData}
                 batchId={batchId}
                 fetchData={fetchData}
