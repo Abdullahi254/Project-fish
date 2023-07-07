@@ -1,6 +1,6 @@
 'use client';
 import { Sold } from '@prisma/client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 type Props = {
     soldList: Sold[]
@@ -13,6 +13,13 @@ const SoldTable = ({
     show,
     batchDate
 }: Props) => {
+    const [total, setTotal] = useState<number>(0)
+
+    useEffect(()=>{
+        const quantityList = soldList.map(data=>data.quantity)
+        const sum = quantityList.reduce((acc,curr)=>acc+curr)
+        setTotal(sum) 
+    },[soldList])
     return (
         <>
             <div className='w-full flex justify-center items-center'>
@@ -44,6 +51,15 @@ const SoldTable = ({
                                 </tr>
                             </React.Fragment>)
                     }
+                    <tr className='bg-white'>
+                        <th className='px-6 py-4'></th>
+                        <th scope="row" className="px-6 py-4 font-semibold text-gray-900 whitespace-nowrap">
+                            TOTAL:
+                        </th>
+                        <th scope="row" className="px-6 py-4 font-semibold text-gray-900 whitespace-nowrap">
+                            {total.toFixed(2)}
+                        </th>
+                    </tr>
                 </tbody>
             </table>
         </>
