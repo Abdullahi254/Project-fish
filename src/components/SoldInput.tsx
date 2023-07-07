@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState, useRef, useTransition } from 'react'
 import { MdAdd, } from 'react-icons/md'
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { AiOutlineLoading3Quarters as Spinner, AiFillCloseCircle as Close } from "react-icons/ai"
 import { Sold } from '@prisma/client';
 
@@ -9,15 +9,17 @@ type Props = {
     addData: (
         recordId: number,
         quantity: number,
-        batchId: number
+        batchId: number,
     ) => Promise<void>
     recordId: number
     batchId: number
     soldList: Sold[]
     remaining: number
+    batchDate: string | string[] | undefined
+    show: string | string[]
 }
 
-const SoldInput = ({ addData, recordId, batchId, soldList, remaining }: Props) => {
+const SoldInput = ({ addData, recordId, batchId, soldList, remaining, batchDate, show }: Props) => {
     const [showForm, setShowForm] = useState<boolean>(false)
 
     const [weightSwitch, setWeightSwitch] = useState<boolean>(false)
@@ -30,7 +32,7 @@ const SoldInput = ({ addData, recordId, batchId, soldList, remaining }: Props) =
     const weigtRef = useRef<HTMLInputElement>(null)
 
     const router = useRouter()
-
+    const pathName = usePathname()
     const handleCancel = () => {
         setShowForm(false)
         if (weigtRef.current?.value) {
@@ -58,10 +60,9 @@ const SoldInput = ({ addData, recordId, batchId, soldList, remaining }: Props) =
                 const weigt = weigtRef.current?.value
                 if (weigt) {
                     addData(recordId, Number(weigt), batchId)
-                    router.refresh()
+                    router.replace(`${pathName}?batch=${batchId}&batchDate=${batchDate}&rem=${rem-Number(weigt)}&show=${show}`)
                     setShowForm(prev => !prev)
                     weigtRef.current.value = ''
-                    setRemaining(prev => (prev - Number(weigt)))
                     handleCancel()
                 }
                 else {
@@ -84,7 +85,7 @@ const SoldInput = ({ addData, recordId, batchId, soldList, remaining }: Props) =
     }, [weightSwitch])
     useEffect(() => {
         setRemaining(remaining)
-    }, [remaining])
+    }, [remaining, rem])
     return (
         <>
             {error &&

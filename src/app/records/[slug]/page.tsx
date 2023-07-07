@@ -27,8 +27,16 @@ const Home = async ({
         return (
             <div className="mt-12 w-full">
                 <div className="max-w-7xl mx-auto relative overflow-x-auto p-4">
-                    <SoldTable soldList={soldList} show={show} batchDate={batchDate}/>
-                    { show && <SoldInput batchId={Number(batchId)} recordId={Number(params.slug)} addData={addSold} soldList={soldList} remaining={Number(remaining)}/>}
+                    <SoldTable soldList={soldList} show={show} batchDate={batchDate} />
+                    {show && <SoldInput
+                        recordId={Number(params.slug)}
+                        batchId={Number(batchId)}
+                        batchDate={batchDate}
+                        remaining={Number(remaining)}
+                        show={show}
+                        addData={addSold} soldList={soldList}
+                    />
+                    }
                 </div>
             </div>
         )

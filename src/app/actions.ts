@@ -305,7 +305,6 @@ export const updateRecord = async (recordId: number, sold: number, batchId: numb
     try {
         const existingRecords = await fetchRecords(batchId)
         const lastRecord = existingRecords[existingRecords.length - 1]
-        const weight = lastRecord.weight
         if (lastRecord.id !== recordId) {
             throw new Error("Can't Update this Record Data")
         }
@@ -317,7 +316,9 @@ export const updateRecord = async (recordId: number, sold: number, batchId: numb
                 weightSold: {
                     increment: sold
                 },
-                remaining: (weight - sold)
+                remaining: {
+                    decrement: sold
+                }
             }
         })
     } catch (er: any) {
