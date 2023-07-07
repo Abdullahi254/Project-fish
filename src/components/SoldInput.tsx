@@ -55,12 +55,13 @@ const SoldInput = ({ addData, recordId, batchId, soldList, remaining, batchDate,
     }
     async function createSold(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
+        console.log("papap")
         try {
             startTransition(() => {
                 const weigt = weigtRef.current?.value
                 if (weigt) {
                     addData(recordId, Number(weigt), batchId)
-                    router.replace(`${pathName}?batch=${batchId}&batchDate=${batchDate}&rem=${rem-Number(weigt)}&show=${show}`)
+                    router.replace(`${pathName}?batch=${batchId}&batchDate=${batchDate}&rem=${(rem-Number(weigt)).toFixed(2)}&show=${show}`)
                     setShowForm(prev => !prev)
                     weigtRef.current.value = ''
                     handleCancel()
@@ -113,7 +114,7 @@ const SoldInput = ({ addData, recordId, batchId, soldList, remaining, batchDate,
                     <form className="w-full max-w-[600px] mx-auto  py-2 flex-wrap px-2" onSubmit={(e) => createSold(e)}>
                         <div className="flex items-center  border-b border-gray-500 py-2">
                             <input name='amount' disabled={isPending} className="text-xs md:text-sm appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" min="1" step={'.01'} ref={weigtRef} type='number' placeholder="Weight Sold(KG)" onChange={handleWeightChange} max={rem} />
-                            <button className=" uppercase border-transparent disabled:bg-gray-300  flex-shrink-0 bg-gray-900 border-gray-500 text-xs md:text-sm text-white py-1 px-2 rounded" type="submit" disabled={isPending || disableButton}>
+                            <button className=" uppercase border-transparent disabled:bg-gray-300  flex-shrink-0 bg-gray-900 border-gray-500 text-xs md:text-sm text-white py-1 px-2 rounded" type="submit" disabled={isPending || disableButton || (rem < 1)}>
                                 Add
                             </button>
                             <button className="flex-shrink-0 border-transparent border-2 text-red-400 hover:text-red-700 text-xs md:text-sm py-1 px-2 rounded" type="button" disabled={isPending} onClick={handleCancel}>
