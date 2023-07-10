@@ -360,6 +360,45 @@ export const updateWaterLoss = async (batchId: number, waterLoss: number) => {
     }
 };
 
+export const updateLastRecordWeight = async (weight: number, batchId: number) => {
+    try {
+        const existingRecords = await fetchRecords(batchId)
+        if (existingRecords.length < 1) {
+            const record = await prisma.record.create({
+                data: {
+                    weight,
+                    weightSold: 0,
+                    remaining: (weight - 0),
+                    waterLoss: 0,
+                    batch: {
+                        connect: { id: batchId }
+                    }
+                }
+            })
+        } else {
+            const previousRecord = existingRecords[existingRecords.length - 1]
+            const record = await prisma.record.update({
+                data: {
+                    weight:{
+                        increment: weight
+                    },
+                    remaining: {
+                        increment: weight
+                    },
+                    batch: {
+                        connect: { id: batchId }
+                    }
+                },
+                where: {
+                    id: previousRecord.id
+                }
+            })
+        }
+    } catch (er: any) {
+        throw new Error(er.message, { cause: er })
+    }
+}
+
 export const addRecordData = async ({
     weight,
     batchId
@@ -439,11 +478,11 @@ export const fetchBatchesByDateRange = async (startDate: Date, endDate: Date) =>
 export const deleteData = async (batchId: number) => {
     try {
         const deleteBatch = await prisma.batch.delete({
-            where:{
-                id:batchId
+            where: {
+                id: batchId
             }
         })
-        
+
     } catch (er: any) {
         throw new Error(er.message, { cause: er })
     }

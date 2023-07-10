@@ -1,7 +1,7 @@
 'use client'
 
 import RecordInput from './RecordInput'
-import { addRecordData, fetchRecords } from '@/app/actions'
+import { addRecordData, fetchRecords, updateLastRecordWeight } from '@/app/actions'
 import { AsyncReturnType } from "../../typing"
 import React, { useEffect, useState, useTransition } from 'react'
 import { AiOutlineEdit } from "react-icons/ai"
@@ -26,13 +26,12 @@ const RecordsTable = ({ batchId, batchDate }: Props) => {
 
     const fetchData = React.useCallback(async () => {
         try {
-            setLoading(true)
-            const records = await fetchRecords(batchId)
-            setRecords(records)
-            setLoading(false)
+            startTransition(async () => {
+                const records = await fetchRecords(batchId)
+                setRecords(records)
+            })
         } catch (er: any) {
             console.log(er.message)
-            setLoading(false)
             setError(er.message)
         }
     }, [batchId])
@@ -90,11 +89,9 @@ const RecordsTable = ({ batchId, batchDate }: Props) => {
                     }
                 </tbody>
             </table>
-            <div className='bg-white w-full flex justify-center py-1'>
-                {loading && <Spinner className=' text-lg animate-spin' />}
-            </div>
-            <div className='bg-white w-full flex justify-center py-1'>
-                {isPending && <Spinner className=' text-lg animate-spin' />}
+            <div className='bg-white w-full flex justify-center py-2'>
+                {(loading || isPending) && <Spinner className=' text-lg animate-spin' />}
+                {(!loading && !isPending) && records.length < 1 && <h3 className='text-gray-500 font-semibold text-center'>Add new Record Entry</h3>}
             </div>
             {error &&
                 <div className='bg-white w-full py-2'>
@@ -114,6 +111,8 @@ const RecordsTable = ({ batchId, batchDate }: Props) => {
                 fetchData={fetchData}
                 setLoading={(state) => setLoading(state)}
                 getError={(error) => setError(error)}
+                records={records}
+                updateLastRecordWeight={updateLastRecordWeight}
             />
         </>
     )
