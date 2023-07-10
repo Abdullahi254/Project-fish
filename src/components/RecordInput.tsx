@@ -129,7 +129,7 @@ const RecordInput = ({ addData, batchId, fetchData, setLoading, getError, max, r
                         <div className="flex items-center  border-b border-gray-500 py-2">
                             <select name='type' disabled={isPending} className="bg-gray-200 border border-gray-300 text-gray-900 text-xs md:text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full py-2 px-1 cursor-pointer" ref={typeRef} onChange={(e) => handleTypeChange(e)}>
                                 <option >Choose</option>
-                                <option value="new">Add-on Weight</option>
+                                <option value="new">Add Weight</option>
                                 {options && <option value="loss">Water-loss Measurement</option>}
                             </select>
                             <input name='weight' className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" ref={weightRef} type='number' min="1" max={isWaterLoss === 'loss' ? max : undefined} disabled={isPending} step={0.01} placeholder="Weight(Kg)" onChange={handleWeightChange} />
