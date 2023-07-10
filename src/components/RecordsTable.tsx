@@ -91,7 +91,7 @@ const RecordsTable = ({ batchId, batchDate }: Props) => {
             </table>
             <div className='bg-white w-full flex justify-center py-2'>
                 {(loading || isPending) && <Spinner className=' text-lg animate-spin' />}
-                {(!loading && !isPending) && records.length < 1 && <h3 className='text-gray-500 font-semibold text-center'>Add new Record Entry</h3>}
+                {(!loading && !isPending) && records.length < 1 && <h3 className='text-gray-500 font-semibold text-center text-[9px] md:text-xs'>Add new Record Entry</h3>}
             </div>
             {error &&
                 <div className='bg-white w-full py-2'>
