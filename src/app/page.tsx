@@ -38,7 +38,7 @@ const Home = async ({
   } else {
     return (
       <div className="mt-12 w-full">
-        <div className="max-w-7xl mx-auto relative overflow-x-auto p-4">
+        <div className="max-w-7xl mx-auto relative overflow-x-auto md:p-4">
           <BatchTable batchList={batchList} startDate={startDate} endDate={endDate} deleteData={deleteData}/>
           <BatchInput addData={addBatchData} />
         </div>
