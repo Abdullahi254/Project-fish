@@ -50,7 +50,7 @@ const Home = async ({
     } else {
         return (
             <div className="mt-12 w-full">
-                <div className="max-w-7xl mx-auto relative overflow-x-auto p-4 mb-4">
+                <div className="max-w-7xl mx-auto relative overflow-x-auto md:p-4 mb-4">
                     <TransactionTable startDate={startDate} endDate={endDate} transactions={transactions} slug={params.slug} customerName={name} />
                     <TransactionInput addCredit={addCredit} addDebit={addDebit} id={Number(params.slug)} />
                 </div>

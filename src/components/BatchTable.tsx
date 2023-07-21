@@ -84,7 +84,7 @@ const BatchTable = ({
     }, [startDate, endDate])
     return (
         <>
-            <div className='w-full mb-2 space-x-4 py-2 px-2 md:px-8 flex items-center justify-start md:justify-end'>
+            <div className='w-full mb-2 space-x-4 py-2 px-6 md:px-8 flex items-center justify-start md:justify-end'>
                 <span className='text-xs md:text-sm text-gray-500'>From:</span>
                 <input type='date' ref={firstDateRef} className='text-xs md:text-sm text-gray-600' onChange={handleDateChange} />
                 <span className='text-xs md:text-sm text-gray-500'>To:</span>
