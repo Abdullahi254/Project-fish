@@ -11,8 +11,8 @@ function Loading({ }: Props) {
           <div className="h-[20px] bg-gray-200 rounded-full w-32 md:w-48 mb-4"></div>
           <div className="h-[20px] bg-gray-200 rounded-full w-32 md:w-48 mb-4"></div>
           <div className="h-[20px] bg-gray-200 rounded-full w-32 md:w-48 mb-4"></div>
-          <div className="h-[20px] bg-gray-200 rounded-full w-32 md:w-48 mb-4"></div>
-          <div className="h-[20px] bg-gray-200 rounded-full w-32 md:w-48 mb-4"></div>
+          <div className="h-[20px] bg-gray-200 rounded-full w-32 md:w-48 mb-4 hidden md:block"></div>
+          <div className="h-[20px] bg-gray-200 rounded-full w-32 md:w-48 mb-4 hidden md:block"></div>
         </div>
 
         {
@@ -21,8 +21,8 @@ function Loading({ }: Props) {
               <div className="h-[20px] bg-gray-200 rounded-full w-32 md:w-48 mb-4"></div>
               <div className="h-[20px] bg-gray-200 rounded-full w-32 md:w-48 mb-4"></div>
               <div className="h-[20px] bg-gray-200 rounded-full w-32 md:w-48 mb-4"></div>
-              <div className="h-[20px] bg-gray-200 rounded-full w-32 md:w-48 mb-4"></div>
-              <div className="h-[20px] bg-gray-200 rounded-full w-32 md:w-48 mb-4"></div>
+              <div className="h-[20px] bg-gray-200 rounded-full w-32 md:w-48 mb-4 hidden md:block"></div>
+              <div className="h-[20px] bg-gray-200 rounded-full w-32 md:w-48 mb-4 hidden md:block"></div>
             </div>)
         }
 
